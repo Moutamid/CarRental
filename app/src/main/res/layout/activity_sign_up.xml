@@ -244,9 +244,9 @@
                         android:orientation="horizontal">
 
                         <RelativeLayout
+                            android:id="@+id/terms_conditions_circle"
                             android:layout_width="25dp"
                             android:layout_height="25dp"
-                            android:id="@+id/terms_conditions_circle"
                             android:layout_marginStart="5dp"
                             android:layout_marginLeft="5dp"
                             android:layout_marginTop="5dp"
@@ -289,46 +289,24 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="20dp"
                         android:background="#dcdcdc"
-                        android:text="Sign in"
+                        android:text="Sign Up"
                         android:textAllCaps="false"
                         android:textColor="@color/white" />
+
+                    <TextView
+                        android:id="@+id/loginBtn_signUp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="or LOG IN"
+                        android:textColor="@color/goldenrodd"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
 
                 </LinearLayout>
 
             </androidx.cardview.widget.CardView>
-
-            <TextView
-                android:id="@+id/tvNameError"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:layout_marginEnd="5dp"
-                android:gravity="center|start"
-                android:text="Please enter name"
-                android:textColor="@android:color/holo_red_dark"
-                android:visibility="gone" />
-
-            <TextView
-                android:id="@+id/tvEmailError"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:layout_marginEnd="5dp"
-                android:gravity="center|start"
-                android:text="Please enter email"
-                android:textColor="@android:color/holo_red_dark"
-                android:visibility="gone" />
-
-            <TextView
-                android:id="@+id/tvPasswordError"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:layout_marginEnd="5dp"
-                android:gravity="center|start"
-                android:text="Please enter password"
-                android:textColor="@android:color/holo_red_dark"
-                android:visibility="gone" />
 
             <View
                 android:layout_width="match_parent"
@@ -336,19 +314,6 @@
 
         </LinearLayout>
 
-
     </androidx.core.widget.NestedScrollView>
-
-    <TextView
-        android:id="@+id/loginBtn_signUp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_margin="20dp"
-        android:gravity="center"
-        android:text="or LOG IN"
-        android:textColor="@color/goldenrodd"
-        android:textSize="20sp"
-        android:textStyle="bold" />
 
 </RelativeLayout>
