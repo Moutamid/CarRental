@@ -1,7 +1,9 @@
 plugins {
     id 'com.android.application'
 }
-
+apply plugin: 'com.google.gms.google-services'
+// Apply the Crashlytics Gradle plugin
+apply plugin: 'com.google.firebase.crashlytics'
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
@@ -46,4 +48,20 @@ dependencies {
 
     // Dependency to Circle ImageViews
     implementation 'de.hdodenhof:circleimageview:3.1.0'
+
+    // GLIDE LIBRARY
+    implementation 'com.github.bumptech.glide:glide:4.12.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
+
+    // FIREBASE DEPENDENCIES
+    implementation platform('com.google.firebase:firebase-bom:27.1.0')
+    implementation 'com.google.firebase:firebase-auth'
+    implementation 'com.google.firebase:firebase-database'
+    implementation 'com.google.android.gms:play-services-auth:19.0.0'
+    //implementation 'com.google.firebase:firebase-storage'
+
+    // FIREBASE CRASH-LYTICS
+    implementation 'com.google.firebase:firebase-crashlytics'
+    implementation 'com.google.firebase:firebase-analytics'
+
 }

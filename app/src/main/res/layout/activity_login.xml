@@ -6,6 +6,13 @@
     android:layout_height="match_parent"
     tools:context=".ActivityLogin">
 
+<!--
+    1. Home,
+    2. Booking History,
+    3. Request Status(Pending, Confirmed),
+    4. Tracker(Start Drive and track Mileage)
+-->
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -90,6 +97,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:layout_marginBottom="20dp"
+                    android:id="@+id/forgot_password_btn_login"
                     android:gravity="end"
                     android:text="Forgot password?"
                     android:textColor="@color/goldenrodd"

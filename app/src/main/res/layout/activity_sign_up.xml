@@ -275,6 +275,7 @@
                             android:layout_height="match_parent"
                             android:layout_marginStart="5dp"
                             android:layout_marginLeft="5dp"
+                            android:id="@+id/terms_conditions_btn_sign_up"
                             android:gravity="center_vertical"
                             android:text="Terms of service"
                             android:textColor="@color/goldenrodd"

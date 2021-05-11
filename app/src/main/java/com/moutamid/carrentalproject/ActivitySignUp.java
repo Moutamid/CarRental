@@ -1,6 +1,7 @@
 package com.moutamid.carrentalproject;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -28,24 +29,30 @@ import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.safetynet.SafetyNet;
 import com.google.android.gms.safetynet.SafetyNetApi;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 
 public class ActivitySignUp extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks {
     private static final String TAG = "ActivitySignUp";
 
     private static final String SITE_KEY = "6LcCSNAaAAAAAAsj6vRzsqYkaORfW_66jGo1o1RD";
-    private static final String SECRET_KEY = "6LcCSNAaAAAAAB0wgP7r8Qf96gJbQuUVJl-WmB7O";
+//    private static final String SECRET_KEY = "6LcCSNAaAAAAAB0wgP7r8Qf96gJbQuUVJl-WmB7O";
 
     private GoogleApiClient googleApiClient;
 
-//    private EditText userNameEditText, emailEditText, passwordEditText, confirmPasswordEditText;
+    //    private EditText userNameEditText, emailEditText, passwordEditText, confirmPasswordEditText;
 //    private Button signUpBtn;
 //
-//    private ProgressDialog mDialog;
-//
-//    private FirebaseAuth mAuth;
-//
-//    private DatabaseReference mDatabaseUsers;
+    private ProgressDialog mDialog;
+    //
+    private FirebaseAuth mAuth;
+    //
+    private DatabaseReference mDatabaseUsers;
 //
 //    private String userNameStr;
 //
@@ -65,17 +72,35 @@ public class ActivitySignUp extends AppCompatActivity implements GoogleApiClient
 
     private boolean shown = false;
 
+    private String name, email, password;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
         Log.d(TAG, "onCreate: ");
 
+        mAuth = FirebaseAuth.getInstance();
+        if (mAuth.getCurrentUser() != null) {
+            finish();
+//            Intent intent = new Intent(ActivitySignUp.this, BottomNavigationActivity.class);
+//            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//            startActivity(intent);
+            return;
+        }
+
         googleApiClient = new GoogleApiClient.Builder(ActivitySignUp.this)
                 .addApi(SafetyNet.API)
                 .addConnectionCallbacks(ActivitySignUp.this)
                 .build();
         googleApiClient.connect();
+
+        findViewById(R.id.terms_conditions_btn_sign_up).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(ActivitySignUp.this, TermsConditionsActivity.class));
+            }
+        });
 
 //        tvColor = findViewById(R.id.tvColor);
 //        tvNameError = findViewById(R.id.tvNameError);
@@ -125,108 +150,100 @@ public class ActivitySignUp extends AppCompatActivity implements GoogleApiClient
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "onClick: findViewById(R.id.btnRegister)");
-                String name = etName.getText().toString(), email = etEmail.getText().toString(), password = etPassword.getText().toString();
+                name = etName.getText().toString();
+                email = etEmail.getText().toString();
+                password = etPassword.getText().toString();
 
                 if (name.length() > 0 && email.length() > 0 && password.length() > 0) {
                     Log.d(TAG, "onClick: if (name.length() > 0 && email.length() > 0 && password.length() > 0) {");
 
                     if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
                         //if Email Address is Invalid..
+                        Toast.makeText(ActivitySignUp.this, "Email is invalid!", Toast.LENGTH_SHORT).show();
+                        return;
                     }
-                        if (isRegistrationClickable) {
+                    if (isRegistrationClickable) {
 
-                            if (googleApiClient.isConnected()) {
+                        if (googleApiClient.isConnected()) {
 
-                                verifyReCaptchaToken();
+                            verifyReCaptchaToken();
 
-                            } else {
-                                Toast.makeText(ActivitySignUp.this, "Google Api client is not connected. Please wait...!", Toast.LENGTH_SHORT).show();
-                            }
-
-                            Log.d(TAG, "onClick: if (isRegistrationClickable) {");
                         } else {
-                            Toast.makeText(ActivitySignUp.this, "Please follow all rules!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ActivitySignUp.this, "Google Api client is not connected. Please wait...!", Toast.LENGTH_SHORT).show();
                         }
+
+                        Log.d(TAG, "onClick: if (isRegistrationClickable) {");
                     } else {
-                        Log.d(TAG, "onClick: findViewById(R.id.btnRegister).} else {");
-                        if (name.length() == 0) {
-                            Toast.makeText(ActivitySignUp.this, "Name is none", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ActivitySignUp.this, "Please follow all rules!", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Log.d(TAG, "onClick: findViewById(R.id.btnRegister).} else {");
+                    if (name.length() == 0) {
+                        Toast.makeText(ActivitySignUp.this, "Name is none", Toast.LENGTH_SHORT).show();
 //                        tvNameError.setVisibility(View.VISIBLE);
-                        }
-                        if (email.length() == 0) {
-                            Toast.makeText(ActivitySignUp.this, "Email is none", Toast.LENGTH_SHORT).show();
+                    }
+                    if (email.length() == 0) {
+                        Toast.makeText(ActivitySignUp.this, "Email is none", Toast.LENGTH_SHORT).show();
 
 //                        tvEmailError.setVisibility(View.VISIBLE);
-                        }
-                        if (password.length() == 0) {
-                            Toast.makeText(ActivitySignUp.this, "Password is none", Toast.LENGTH_SHORT).show();
+                    }
+                    if (password.length() == 0) {
+                        Toast.makeText(ActivitySignUp.this, "Password is none", Toast.LENGTH_SHORT).show();
 
 //                        tvPasswordError.setVisibility(View.VISIBLE);
-                        }
                     }
                 }
-            });
+            }
+        });
 
-            inputChange();
+        inputChange();
 
-            //------------------------------------------------------------------
-//        mAuth = FirebaseAuth.getInstance();
-//        if (mAuth.getCurrentUser() != null) {
-//            finish();
-//            Intent intent = new Intent(ActivitySignUp.this, BottomNavigationActivity.class);
-//            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//            startActivity(intent);
-//            return;
-//        }
+        findViewById(R.id.loginBtn_signUp).
 
-            findViewById(R.id.loginBtn_signUp).
+                setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        startActivity(new Intent(ActivitySignUp.this, ActivityLogin.class));
+                    }
+                });
 
-            setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick (View v){
-                    startActivity(new Intent(ActivitySignUp.this, ActivityLogin.class));
-                }
-            });
+        mDatabaseUsers = FirebaseDatabase.getInstance().getReference();
+        mDatabaseUsers.keepSynced(true);
 
-//        findViewById(R.id.backbtn_signup).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                finish();
-//            }
-//        });
-//
-//        mDatabaseUsers = FirebaseDatabase.getInstance().getReference();
-//        mDatabaseUsers.keepSynced(true);
-//
-//        mDialog = new ProgressDialog(this);
-//        mDialog.setCancelable(false);
-//        mDialog.setMessage("Signing you in...");
+        mDialog = new ProgressDialog(this);
+        mDialog.setCancelable(false);
+        mDialog.setMessage("Signing you in...");
 
 //        initViews();
 
-        }
+    }
 
-        private void verifyReCaptchaToken () {
-            SafetyNet.SafetyNetApi.verifyWithRecaptcha(
-                    googleApiClient, SITE_KEY
-            ).setResultCallback(new ResultCallback<SafetyNetApi.RecaptchaTokenResult>() {
-                @Override
-                public void onResult(@NonNull SafetyNetApi.RecaptchaTokenResult recaptchaTokenResult) {
-                    Status status = recaptchaTokenResult.getStatus();
-                    if ((status != null) && status.isSuccess()) {
-                        Toast.makeText(ActivitySignUp.this,
-                                "REGISTRATION",
-                                Toast.LENGTH_LONG).show();
+    private void verifyReCaptchaToken() {
+        SafetyNet.SafetyNetApi.verifyWithRecaptcha(
+                googleApiClient, SITE_KEY
+        ).setResultCallback(new ResultCallback<SafetyNetApi.RecaptchaTokenResult>() {
+            @Override
+            public void onResult(@NonNull SafetyNetApi.RecaptchaTokenResult recaptchaTokenResult) {
+                Status status = recaptchaTokenResult.getStatus();
+                if ((status != null) && status.isSuccess()) {
+//                    Toast.makeText(ActivitySignUp.this,
+//                            "REGISTRATION",
+//                            Toast.LENGTH_LONG).show();
 
-                    } else {
-                        Toast.makeText(ActivitySignUp.this, "Sorry! You are not verified. Please try again later.", Toast.LENGTH_SHORT).show();
-                    }
+                    mDialog.show();
+
+                    //                // Signing up user
+                    signUpUserWithNameAndPassword();
+
+                } else {
+                    Toast.makeText(ActivitySignUp.this, "Sorry! You are not verified. Please try again later.", Toast.LENGTH_SHORT).show();
                 }
-            });
+            }
+        });
 
-        }
+    }
 
-        private void checkEmpty (String name, String email, String password){
+    private void checkEmpty(String name, String email, String password) {
 //        if (name.length() > 0 && tvNameError.getVisibility() == View.VISIBLE) {
 //            tvNameError.setVisibility(View.GONE);
 //        }
@@ -236,111 +253,111 @@ public class ActivitySignUp extends AppCompatActivity implements GoogleApiClient
 //        if (email.length() > 0 && tvEmailError.getVisibility() == View.VISIBLE) {
 //            tvEmailError.setVisibility(View.GONE);
 //        }
-        }
+    }
 
-        @SuppressLint("ResourceType")
-        private void checkAllData (String email){
-            Log.d(TAG, "checkAllData: ");
-            if (isTermsAccepted && isAtLeast8 && hasUppercase && hasNumber && hasSymbol && email.length() > 0) {
-                isRegistrationClickable = true;
-                Log.d(TAG, "checkAllData: isRegistrationClickable = true;");
+    @SuppressLint("ResourceType")
+    private void checkAllData(String email) {
+        Log.d(TAG, "checkAllData: ");
+        if (isTermsAccepted && isAtLeast8 && hasUppercase && hasNumber && hasSymbol && email.length() > 0) {
+            isRegistrationClickable = true;
+            Log.d(TAG, "checkAllData: isRegistrationClickable = true;");
 //            tvColor.setTextColor(Color.WHITE);
-                btnRegister.setBackgroundColor(Color.parseColor(getString(R.color.goldenrodd)));
-            } else {
-                Log.d(TAG, "checkAllData: isRegistrationClickable = false;");
-                isRegistrationClickable = false;
-                btnRegister.setBackgroundColor(Color.parseColor(getString(R.color.colorDefault)));
-            }
+            btnRegister.setBackgroundColor(Color.parseColor(getString(R.color.goldenrodd)));
+        } else {
+            Log.d(TAG, "checkAllData: isRegistrationClickable = false;");
+            isRegistrationClickable = false;
+            btnRegister.setBackgroundColor(Color.parseColor(getString(R.color.colorDefault)));
+        }
+    }
+
+    @SuppressLint("ResourceType")
+    private void registrationDataCheck() {
+        Log.d(TAG, "registrationDataCheck: ");
+        String password = etPassword.getText().toString(), email = etEmail.getText().toString(), name = etName.getText().toString();
+
+        checkEmpty(name, email, password);
+
+        if (password.length() >= 8) {
+            isAtLeast8 = true;
+            frameOne.setCardBackgroundColor(Color.parseColor(getString(R.color.goldenrodd)));
+        } else {
+            isAtLeast8 = false;
+            frameOne.setCardBackgroundColor(Color.parseColor(getString(R.color.colorDefault)));
+        }
+        if (password.matches("(.*[A-Z].*)")) {
+            hasUppercase = true;
+            frameTwo.setCardBackgroundColor(Color.parseColor(getString(R.color.goldenrodd)));
+        } else {
+            hasUppercase = false;
+            frameTwo.setCardBackgroundColor(Color.parseColor(getString(R.color.colorDefault)));
+        }
+        if (password.matches("(.*[0-9].*)")) {
+            hasNumber = true;
+            frameThree.setCardBackgroundColor(Color.parseColor(getString(R.color.goldenrodd)));
+        } else {
+            hasNumber = false;
+            frameThree.setCardBackgroundColor(Color.parseColor(getString(R.color.colorDefault)));
+        }
+        if (password.matches("^(?=.*[_.@#$%&*!:;+<>()]).*$")) {
+            hasSymbol = true;
+            frameFour.setCardBackgroundColor(Color.parseColor(getString(R.color.goldenrodd)));
+        } else {
+            hasSymbol = false;
+            frameFour.setCardBackgroundColor(Color.parseColor(getString(R.color.colorDefault)));
         }
 
-        @SuppressLint("ResourceType")
-        private void registrationDataCheck () {
-            Log.d(TAG, "registrationDataCheck: ");
-            String password = etPassword.getText().toString(), email = etEmail.getText().toString(), name = etName.getText().toString();
+        checkAllData(email);
+    }
 
-            checkEmpty(name, email, password);
+    private void inputChange() {
+        Log.d(TAG, "inputChange: ");
+        etEmail.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-            if (password.length() >= 8) {
-                isAtLeast8 = true;
-                frameOne.setCardBackgroundColor(Color.parseColor(getString(R.color.goldenrodd)));
-            } else {
-                isAtLeast8 = false;
-                frameOne.setCardBackgroundColor(Color.parseColor(getString(R.color.colorDefault)));
-            }
-            if (password.matches("(.*[A-Z].*)")) {
-                hasUppercase = true;
-                frameTwo.setCardBackgroundColor(Color.parseColor(getString(R.color.goldenrodd)));
-            } else {
-                hasUppercase = false;
-                frameTwo.setCardBackgroundColor(Color.parseColor(getString(R.color.colorDefault)));
-            }
-            if (password.matches("(.*[0-9].*)")) {
-                hasNumber = true;
-                frameThree.setCardBackgroundColor(Color.parseColor(getString(R.color.goldenrodd)));
-            } else {
-                hasNumber = false;
-                frameThree.setCardBackgroundColor(Color.parseColor(getString(R.color.colorDefault)));
-            }
-            if (password.matches("^(?=.*[_.@#$%&*!:;+<>()]).*$")) {
-                hasSymbol = true;
-                frameFour.setCardBackgroundColor(Color.parseColor(getString(R.color.goldenrodd)));
-            } else {
-                hasSymbol = false;
-                frameFour.setCardBackgroundColor(Color.parseColor(getString(R.color.colorDefault)));
             }
 
-            checkAllData(email);
-        }
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                registrationDataCheck();
+                Log.d(TAG, "onTextChanged: etEmail");
+            }
 
-        private void inputChange () {
-            Log.d(TAG, "inputChange: ");
-            etEmail.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            @Override
+            public void afterTextChanged(Editable editable) {
 
-                }
+            }
+        });
 
-                @Override
-                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                    registrationDataCheck();
-                    Log.d(TAG, "onTextChanged: etEmail");
-                }
+        etPassword.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-                @Override
-                public void afterTextChanged(Editable editable) {
+            }
 
-                }
-            });
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                registrationDataCheck();
+                Log.d(TAG, "onTextChanged: etPassword");
+            }
 
-            etPassword.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            @Override
+            public void afterTextChanged(Editable s) {
 
-                }
+            }
+        });
+    }
 
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    registrationDataCheck();
-                    Log.d(TAG, "onTextChanged: etPassword");
-                }
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+        Log.d(TAG, "onConnected: Recaptcha ");
+    }
 
-                @Override
-                public void afterTextChanged(Editable s) {
+    @Override
+    public void onConnectionSuspended(int i) {
+        Log.d(TAG, "onConnectionSuspended: recaptcha");
 
-                }
-            });
-        }
-
-        @Override
-        public void onConnected (@Nullable Bundle bundle){
-            Log.d(TAG, "onConnected: Recaptcha ");
-        }
-
-        @Override
-        public void onConnectionSuspended ( int i){
-            Log.d(TAG, "onConnectionSuspended: recaptcha");
-
-        }
+    }
 
 //    private View.OnClickListener signUpBtnListener() {
 //        return new View.OnClickListener() {
@@ -373,9 +390,8 @@ public class ActivitySignUp extends AppCompatActivity implements GoogleApiClient
 //            // Checking if passwordStr is equal to confirmed Password
 //            if (passwordStr.equals(confirmedPasswordStr)) {
 //
-//                // Signing up user
-//                signUpUserWithNameAndPassword();
-//
+
+    //
 //            } else {
 //
 //                mDialog.dismiss();
@@ -412,38 +428,30 @@ public class ActivitySignUp extends AppCompatActivity implements GoogleApiClient
 //
 //    }
 //
-//    private void signUpUserWithNameAndPassword() {
-//
-//        if (!Patterns.EMAIL_ADDRESS.matcher(emailStr).matches()) {
-//            //if Email Address is Invalid..
-//
-//            mDialog.dismiss();
-//            emailEditText.setError("Please enter a valid email with no spaces and special characters included");
-//            emailEditText.requestFocus();
-//        } else {
-//
-//            mAuth.createUserWithEmailAndPassword(emailStr, passwordStr).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-//                @Override
-//                public void onComplete(@NonNull Task<AuthResult> task) {
-//
-//                    if (task.isSuccessful()) {
-//
-//                        addUserDetailsToDatabase();
-//
-//                    } else {
-//
-//                        mDialog.dismiss();
-//                        Toast.makeText(ActivitySignUp.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-//                    }
-//                }
-//            });
+    private void signUpUserWithNameAndPassword() {
+
+        mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+
+                if (task.isSuccessful()) {
+
+                    mDialog.dismiss();
+
+                    Toast.makeText(ActivitySignUp.this, "You are signed in", Toast.LENGTH_SHORT).show();
+
+//                    addUserDetailsToDatabase();
+
+                } else {
+
+                    mDialog.dismiss();
+                    Toast.makeText(ActivitySignUp.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 //        }
-////        } else {
-////
-////            mDialog.dismiss();
-////            Toast.makeText(this, "You are not online", Toast.LENGTH_SHORT).show();
-////        }
-//    }
+
+    }
 //
 //    private static class UserDetails {
 //
@@ -519,17 +527,5 @@ public class ActivitySignUp extends AppCompatActivity implements GoogleApiClient
 //        });
 //
 //    }
-//
-//    private void initViews() {
-//
-//        userNameEditText = findViewById(R.id.user_name_edittext_activity_sign_up);
-//
-//        emailEditText = findViewById(R.id.email_edittext_activity_sign_up);
-//        passwordEditText = findViewById(R.id.password_edittext_activity_sign_up);
-//        confirmPasswordEditText = findViewById(R.id.confirm_password_edittext_activity_sign_up);
-//
-//        signUpBtn = findViewById(R.id.create_btn_activity_sign_up);
-//        signUpBtn.setOnClickListener(signUpBtnListener());
-//    }
 
-    }
+}

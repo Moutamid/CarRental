@@ -11,48 +11,52 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class ActivityLogin extends AppCompatActivity {
 
     private EditText emailEditText, passwordEditText;
     private Button loginBtn;
     private ProgressDialog mProgressDialog;
-    //    private DatabaseReference mDatabaseUsers;
+    private DatabaseReference mDatabaseUsers;
     private Boolean isOnline = false;
-    //    private SharedPreferences sharedPreferences;
+    //        private SharedPreferences sharedPreferences;
     private EditText userNameEditText_RSD;
 
-//    private FirebaseAuth mAuth;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-//        mAuth = FirebaseAuth.getInstance();
-//        if (mAuth.getCurrentUser() != null) {
-//            finish();
+        mAuth = FirebaseAuth.getInstance();
+        if (mAuth.getCurrentUser() != null) {
+            finish();
 //            Intent intent = new Intent(ActivityLogin.this, BottomNavigationActivity.class);
 //            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 //            startActivity(intent);
-//            return;
-//        }
+            return;
+        }
 
         findViewById(R.id.signBtn_login).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent(ActivityLogin.this, ActivitySignUp.class);
-//                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                        finish();
-//                        startActivity(intent);
                 startActivity(new Intent(ActivityLogin.this, ActivitySignUp.class));
             }
         });
 
 
-//        mDatabaseUsers = FirebaseDatabase.getInstance().getReference().child("users");
-//        mDatabaseUsers.keepSynced(true);
+        mDatabaseUsers = FirebaseDatabase.getInstance().getReference().child("users");
+        mDatabaseUsers.keepSynced(true);
 
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setCancelable(false);
@@ -102,22 +106,22 @@ public class ActivityLogin extends AppCompatActivity {
             emailEditText.requestFocus();
         } else {
 
-//            mAuth.signInWithEmailAndPassword(emailStr, passwordStr).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-//                @Override
-//                public void onComplete(@NonNull Task<AuthResult> task) {
-//
-//                    if (task.isSuccessful()) {
+            mAuth.signInWithEmailAndPassword(emailStr, passwordStr).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
 
-            getUserdetails();
+                    if (task.isSuccessful()) {
 
-//                    } else {
-//
-//                        mProgressDialog.dismiss();
-//                        Toast.makeText(ActivityLogin.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-//                    }
-//
-//                }
-//            });
+                        getUserdetails();
+
+                    } else {
+
+                        mProgressDialog.dismiss();
+                        Toast.makeText(ActivityLogin.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+            });
 
         }
 
