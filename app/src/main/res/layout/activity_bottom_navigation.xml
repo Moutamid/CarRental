@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/parentLayoutOnBoarding"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".BottomNavigationActivity">
+
+    <!--
+        1. Home,
+        2. Booking History,
+        3. Request Status(Pending, Confirmed),
+        4. Tracker(Start Drive and track Mileage)
+    -->
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/bottom_navigation_view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/bottom_navigation_Bar" />
+
+    <me.ibrahimsn.lib.SmoothBottomBar
+        android:id="@+id/bottom_navigation_Bar"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_alignParentBottom="true"
+        app:backgroundColor="@color/goldenrodd"
+        app:menu="@menu/menu" />
+
+</RelativeLayout>

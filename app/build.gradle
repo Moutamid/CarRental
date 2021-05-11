@@ -15,6 +15,8 @@ android {
         versionCode 1
         versionName "1.0"
 
+        multiDexEnabled true
+
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -63,5 +65,11 @@ dependencies {
     // FIREBASE CRASH-LYTICS
     implementation 'com.google.firebase:firebase-crashlytics'
     implementation 'com.google.firebase:firebase-analytics'
+
+    // SMOOTH NAVIGATION LIBRARY
+    implementation 'com.github.ibrahimsn98:SmoothBottomBar:1.7.6'
+
+    // MULTI DEX
+    implementation 'androidx.multidex:multidex:2.0.1'
 
 }

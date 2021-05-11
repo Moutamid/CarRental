@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--
+        1. Home,
+        2. Booking History,
+        3. Request Status(Pending, Confirmed),
+        4. Tracker(Start Drive and track Mileage)
+    -->
+
+    <item
+        android:id="@+id/item_home"
+        android:icon="@drawable/ic_outline_home_24"
+        android:title="Home" />
+
+    <item
+        android:id="@+id/item_booking_history"
+        android:icon="@drawable/ic_baseline_history_24"
+        android:title="Booking History" />
+
+    <item
+        android:id="@+id/item_request_status"
+        android:icon="@drawable/ic_outline_car_request_24"
+        android:title="Request Status" />
+
+    <item
+        android:id="@+id/item_tracker"
+        android:icon="@drawable/ic_outline_my_location_24"
+        android:title="Tracker" />
+
+</menu>
