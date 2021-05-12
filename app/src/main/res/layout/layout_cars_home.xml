@@ -142,7 +142,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:text="$190 /Day"
+                android:text="$190 /Mileage"
                 android:id="@+id/price_layout_car_home"
                 android:textColor="@color/black"
                 android:textSize="17sp"

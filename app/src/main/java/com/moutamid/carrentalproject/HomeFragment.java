@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -55,7 +56,7 @@ public class HomeFragment extends Fragment {
         databaseReference.child("cars").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (!snapshot.exists()){
+                if (!snapshot.exists()) {
                     ProgressBar progressBar = view.findViewById(R.id.progress_bar_home);
                     progressBar.setVisibility(View.GONE);
                     return;
@@ -63,18 +64,22 @@ public class HomeFragment extends Fragment {
 
                 carsArrayList.clear();
 
-                for (DataSnapshot dataSnapshot:snapshot.getChildren()){
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     CarModel model = dataSnapshot.getValue(CarModel.class);
                     carsArrayList.add(model);
                 }
 
                 initRecyclerView();
 
+                setDetailsOnFirstDeal();
+                setDetailsOnSecondDeal();
+                setDetailsOnThirdDeal();
+
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Log.d(TAG, "onCancelled: "+error.getMessage());
+                Log.d(TAG, "onCancelled: " + error.getMessage());
             }
         });
 
@@ -90,27 +95,103 @@ public class HomeFragment extends Fragment {
 //Engine(Petrol, Gas, , Electric, Hybrid)
 //Description
 
-        setDetailsOnFirstDeal();
-        setDetailsOnSecondDeal();
-        setDetailsOnThirdDeal();
-
         return view;
     }
 
     private void setDetailsOnFirstDeal() {
-        if (carsArrayList.get(0)==null){
+        if (carsArrayList.size() <= 0) {
             return;
         }
 
-        LinearLayout linearLayout = view.findViewById(R.id.first_layout_home_fragment);
+        FrameLayout linearLayout = view.findViewById(R.id.first_layout_home_fragment);
         TextView name = (TextView) view.findViewById(R.id.name_first_layout_home_fragment);
         TextView price = (TextView) view.findViewById(R.id.price_first_layout_home_fragment);
+        ImageView image = (ImageView) view.findViewById(R.id.image_first_layout_home_fragment);
 
-        linearLayout.setbac
+        linearLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getActivity(), carsArrayList.get(0).getCarKey(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        price.setText(carsArrayList.get(0).getPerDayRate() + "$ per mileage");
+
+        name.setText(carsArrayList.get(0).getName());
+
+        Glide.with(getActivity())
+                .load(carsArrayList.get(0).getImageUrl())
+                .apply(new RequestOptions()
+                        .placeholder(R.color.grey)
+                        .error(R.color.grey)
+                )
+                .into(image);
 
     }
 
-    private void uploadNewCar(){
+    private void setDetailsOnSecondDeal() {
+        if (carsArrayList.size() <= 1) {
+            return;
+        }
+
+        FrameLayout linearLayout = view.findViewById(R.id.second_layout_home_fragment);
+        TextView name = (TextView) view.findViewById(R.id.name_second_layout_home_fragment);
+        TextView price = (TextView) view.findViewById(R.id.price_second_layout_home_fragment);
+        ImageView image = (ImageView) view.findViewById(R.id.image_second_layout_home_fragment);
+
+        linearLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getActivity(), carsArrayList.get(1).getCarKey(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        price.setText(carsArrayList.get(1).getPerDayRate() + "$ per mileage");
+
+        name.setText(carsArrayList.get(1).getName());
+
+        Glide.with(getActivity())
+                .load(carsArrayList.get(1).getImageUrl())
+                .apply(new RequestOptions()
+                        .placeholder(R.color.grey)
+                        .error(R.color.grey)
+                )
+                .into(image);
+
+    }
+
+    private void setDetailsOnThirdDeal() {
+        if (carsArrayList.size() <= 2) {
+            return;
+        }
+
+        FrameLayout linearLayout = view.findViewById(R.id.third_layout_home_fragment);
+        TextView name = (TextView) view.findViewById(R.id.name_third_layout_home_fragment);
+        TextView price = (TextView) view.findViewById(R.id.price_third_layout_home_fragment);
+        ImageView image = (ImageView) view.findViewById(R.id.image_third_layout_home_fragment);
+
+        linearLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getActivity(), carsArrayList.get(2).getCarKey(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        price.setText(carsArrayList.get(2).getPerDayRate() + "$ per mileage");
+
+        name.setText(carsArrayList.get(2).getName());
+
+        Glide.with(getActivity())
+                .load(carsArrayList.get(2).getImageUrl())
+                .apply(new RequestOptions()
+                        .placeholder(R.color.grey)
+                        .error(R.color.grey)
+                )
+                .into(image);
+
+    }
+
+    private void uploadNewCar() {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
         String pushKey1 = databaseReference.child("cars").push().getKey();
 
@@ -192,7 +273,7 @@ public class HomeFragment extends Fragment {
             if (carModel.isAC())
                 holder.ac.setVisibility(View.VISIBLE);
 
-            holder.price.setText("$" + carModel.getPerDayRate() + " /Day");
+            holder.price.setText("$" + carModel.getPerDayRate() + " /Mileage");
 
             holder.engine.setText(carModel.getEngine());
 

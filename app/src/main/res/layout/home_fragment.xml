@@ -78,12 +78,16 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
 
-                        <LinearLayout
-                            android:layout_width="300dp"
-                            android:layout_height="200dp"
+                        <FrameLayout
                             android:id="@+id/first_layout_home_fragment"
-                            android:background="@drawable/audi"
-                            android:orientation="vertical">
+                            android:layout_width="300dp"
+                            android:layout_height="200dp">
+
+                            <ImageView
+                                android:id="@+id/image_first_layout_home_fragment"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:scaleType="centerCrop" />
 
                             <RelativeLayout
                                 android:layout_width="match_parent"
@@ -99,21 +103,21 @@
                                     android:orientation="vertical">
 
                                     <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:gravity="center"
                                         android:id="@+id/name_first_layout_home_fragment"
-                                        android:text="Audi A7 Sportback"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:gravity="center"
+                                        android:text="No car available"
                                         android:textColor="@color/white"
                                         android:textSize="25sp"
                                         android:textStyle="bold" />
 
                                     <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:gravity="center"
                                         android:id="@+id/price_first_layout_home_fragment"
-                                        android:text="190$ per day"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:gravity="center"
+                                        android:text="No price available"
                                         android:textColor="@color/goldenrodd"
                                         android:textSize="15sp"
                                         android:textStyle="bold" />
@@ -122,64 +126,20 @@
 
                             </RelativeLayout>
 
-                        </LinearLayout>
+                        </FrameLayout>
 
-                        <LinearLayout
-                            android:layout_width="300dp"
-                            android:layout_height="200dp"
+                        <FrameLayout
                             android:id="@+id/second_layout_home_fragment"
-                            android:layout_marginStart="20dp"
-                            android:layout_marginLeft="20dp"
-                            android:background="@drawable/audi"
-                            android:orientation="vertical">
-
-                            <RelativeLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:background="@drawable/bg_top_cars_fragment_home"
-                                android:orientation="horizontal">
-
-                                <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:layout_centerInParent="true"
-                                    android:gravity="center"
-                                    android:orientation="vertical">
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:gravity="center"
-                                        android:text="Audi A7 Sportback"
-                                        android:textColor="@color/white"
-                                        android:id="@+id/name_second_layout_home_fragment"
-                                        android:textSize="25sp"
-                                        android:textStyle="bold" />
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:gravity="center"
-                                        android:text="190$ per day"
-                                        android:textColor="@color/goldenrodd"
-                                        android:textSize="15sp"
-                                        android:id="@+id/price_second_layout_home_fragment"
-                                        android:textStyle="bold" />
-
-                                </LinearLayout>
-
-                            </RelativeLayout>
-
-                        </LinearLayout>
-
-                        <LinearLayout
                             android:layout_width="300dp"
-                            android:layout_marginStart="20dp"
-                            android:id="@+id/third_layout_home_fragment"
-                            android:layout_marginLeft="20dp"
                             android:layout_height="200dp"
-                            android:background="@drawable/audi"
-                            android:orientation="vertical">
+                            android:layout_marginStart="20dp"
+                            android:layout_marginLeft="20dp">
+
+                            <ImageView
+                                android:id="@+id/image_second_layout_home_fragment"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:scaleType="centerCrop" />
 
                             <RelativeLayout
                                 android:layout_width="match_parent"
@@ -195,21 +155,21 @@
                                     android:orientation="vertical">
 
                                     <TextView
+                                        android:id="@+id/name_second_layout_home_fragment"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:gravity="center"
-                                        android:id="@+id/name_third_layout_home_fragment"
-                                        android:text="Audi A7 Sportback"
+                                        android:text="No car available"
                                         android:textColor="@color/white"
                                         android:textSize="25sp"
                                         android:textStyle="bold" />
 
                                     <TextView
+                                        android:id="@+id/price_second_layout_home_fragment"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:gravity="center"
-                                        android:id="@+id/price_third_layout_home_fragment"
-                                        android:text="190$ per day"
+                                        android:text="No price available"
                                         android:textColor="@color/goldenrodd"
                                         android:textSize="15sp"
                                         android:textStyle="bold" />
@@ -218,7 +178,59 @@
 
                             </RelativeLayout>
 
-                        </LinearLayout>
+                        </FrameLayout>
+
+                        <FrameLayout
+                            android:id="@+id/third_layout_home_fragment"
+                            android:layout_width="300dp"
+                            android:layout_height="200dp"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginLeft="20dp">
+
+                            <ImageView
+                                android:id="@+id/image_third_layout_home_fragment"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:scaleType="centerCrop" />
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/bg_top_cars_fragment_home"
+                                android:orientation="horizontal">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_centerInParent="true"
+                                    android:gravity="center"
+                                    android:orientation="vertical">
+
+                                    <TextView
+                                        android:id="@+id/name_third_layout_home_fragment"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:gravity="center"
+                                        android:text="No car available"
+                                        android:textColor="@color/white"
+                                        android:textSize="25sp"
+                                        android:textStyle="bold" />
+
+                                    <TextView
+                                        android:id="@+id/price_third_layout_home_fragment"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:gravity="center"
+                                        android:text="No price available"
+                                        android:textColor="@color/goldenrodd"
+                                        android:textSize="15sp"
+                                        android:textStyle="bold" />
+
+                                </LinearLayout>
+
+                            </RelativeLayout>
+
+                        </FrameLayout>
 
                     </LinearLayout>
 
@@ -236,11 +248,11 @@
                     android:textStyle="bold" />
 
                 <ProgressBar
+                    android:id="@+id/progress_bar_home"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:id="@+id/progress_bar_home"
-                    android:layout_gravity="center_horizontal"/>
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="20dp" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/home_recycler_view"

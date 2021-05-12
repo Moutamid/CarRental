@@ -65,6 +65,12 @@ public class ActivityLogin extends AppCompatActivity {
         // Initializing Views
         initViews();
 
+        findViewById(R.id.forgot_password_btn_login).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
 
     }
 
