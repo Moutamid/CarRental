@@ -66,9 +66,9 @@ public class BottomNavigationActivity extends AppCompatActivity {
 
         // Adding Fragments to Adapter
         adapter.addFragment(new HomeFragment());
-        adapter.addFragment(new FragmentOnBoardingTwo());
-        adapter.addFragment(new FragmentOnBoardingThree());
-        adapter.addFragment(new FragmentOnBoardingThree());
+        adapter.addFragment(new BookingHistoryFragment());
+        adapter.addFragment(new RequestStatusFragment());
+        adapter.addFragment(new TrackerFragment());
 
         // Setting Adapter To ViewPager
         viewPager.setOffscreenPageLimit(4);
