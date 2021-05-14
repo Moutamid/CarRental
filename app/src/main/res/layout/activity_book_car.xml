@@ -22,7 +22,7 @@
             android:layout_marginBottom="10dp">
 
             <ImageView
-                android:id="@+id/car_image_view_layout_home"
+                android:id="@+id/car_image_view_layout_activity_bok_car"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:scaleType="centerCrop"
@@ -33,12 +33,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginLeft="10dp"
-                android:layout_toEndOf="@id/car_image_view_layout_home"
-                android:layout_toRightOf="@id/car_image_view_layout_home"
+                android:layout_toEndOf="@id/car_image_view_layout_activity_bok_car"
+                android:layout_toRightOf="@id/car_image_view_layout_activity_bok_car"
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/name_layout_car_home"
+                    android:id="@+id/name_layout_car_activity_bok_car"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
@@ -55,7 +55,7 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/transmission_layout_car_home"
+                        android:id="@+id/transmission_layout_car_activity_bok_car"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
@@ -75,7 +75,7 @@
                         android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/model_layout_car_home"
+                        android:id="@+id/model_layout_car_activity_bok_car"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
@@ -97,7 +97,7 @@
                         android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/seats_layout_car_home"
+                        android:id="@+id/seats_layout_car_activity_bok_car"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
@@ -114,7 +114,7 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/status_layout_car_home"
+                        android:id="@+id/status_layout_car_activity_bok_car"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
@@ -134,7 +134,7 @@
                         android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/engine_layout_car_home"
+                        android:id="@+id/engine_layout_car_activity_bok_car"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
@@ -151,7 +151,7 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/price_layout_car_home"
+                        android:id="@+id/price_layout_car_activity_bok_car"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
@@ -179,7 +179,7 @@
                         android:weightSum="2">
 
                         <LinearLayout
-                            android:id="@+id/ac_layout_car_home"
+                            android:id="@+id/ac_layout_car_activity_bok_car"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
@@ -202,7 +202,7 @@
                         </LinearLayout>
 
                         <LinearLayout
-                            android:id="@+id/gps_layout_car_home"
+                            android:id="@+id/gps_layout_car_activity_bok_car"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
@@ -243,13 +243,14 @@
 
     </LinearLayout>
 
-    <androidx.core.widget.NestedScrollView
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/bottom_layout_activity_book_car"
         android:layout_below="@id/top_layput_activity_bok_car">
 
         <TextView
+            android:id="@+id/car_description_activity_bok_car"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
@@ -260,7 +261,7 @@
             android:textSize="16sp" />
 
 
-    </androidx.core.widget.NestedScrollView>
+    </ScrollView>
 
     <LinearLayout
         android:id="@+id/bottom_layout_activity_book_car"
@@ -280,12 +281,14 @@
             android:padding="5dp">
 
             <ImageView
+                android:id="@+id/minus_btn_activity_bok_car"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:elevation="10dp"
                 android:src="@drawable/minus" />
 
             <TextView
+                android:id="@+id/current_mileages_activity_bok_car"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="30dp"
@@ -296,6 +299,7 @@
                 android:textStyle="bold" />
 
             <ImageView
+                android:id="@+id/plus_btn_activity_bok_car"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:elevation="10dp"
@@ -328,6 +332,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="~ $10"
+                    android:id="@+id/per_mileage_rate_activity_book_car"
                     android:textColor="@color/goldenrodd"
                     android:textSize="20sp"
                     android:textStyle="bold" />
@@ -351,6 +356,7 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/total_cost_activity_bok_car"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="$50"
@@ -373,9 +379,9 @@
         <androidx.appcompat.widget.AppCompatButton
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_get_started_btn"
-            android:text="Confirm booking"
             android:layout_marginBottom="20dp"
+            android:background="@drawable/bg_get_started_btn"
+            android:text="Request booking"
             android:textAllCaps="false"
             android:textColor="@color/white" />
 

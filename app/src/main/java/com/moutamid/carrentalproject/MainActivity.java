@@ -19,7 +19,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 finish();
-                startActivity(new Intent(MainActivity.this, OnBoardingActivity.class));
+                startActivity(new Intent(MainActivity.this, BookCarActivity.class));
+//                startActivity(new Intent(MainActivity.this, OnBoardingActivity.class));
             }
         }, 2000);
     }
