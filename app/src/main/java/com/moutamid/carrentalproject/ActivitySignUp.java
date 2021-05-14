@@ -32,6 +32,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.HashMap;
+import java.util.Map;
+
 
 public class ActivitySignUp extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks {
     private static final String TAG = "ActivitySignUp";
@@ -60,7 +63,7 @@ public class ActivitySignUp extends AppCompatActivity implements GoogleApiClient
 
     //-----------------------------------------------
 
-    private EditText etName, etEmail, etPassword;
+    private EditText etName, etEmail, etPassword, etConfirmPassword, etLicenseNumber;
     //    private TextView tvNameError, tvEmailError, tvPasswordError, tvColor;
     private CardView frameOne, frameTwo, frameThree, frameFour;
     private Button btnRegister;
@@ -68,7 +71,7 @@ public class ActivitySignUp extends AppCompatActivity implements GoogleApiClient
 
     private boolean shown = false;
 
-    private String name, email, password;
+    private String name, email, password, confirmPassword, licenseNumber;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,6 +108,8 @@ public class ActivitySignUp extends AppCompatActivity implements GoogleApiClient
         etName = findViewById(R.id.etName);
         etEmail = findViewById(R.id.etEmail);
         etPassword = findViewById(R.id.etPassword);
+        etConfirmPassword = findViewById(R.id.etConfirmPassword);
+        etLicenseNumber = findViewById(R.id.etLicenseNumber);
         frameOne = findViewById(R.id.frameOne);
         frameTwo = findViewById(R.id.frameTwo);
         frameThree = findViewById(R.id.frameThree);
@@ -149,13 +154,20 @@ public class ActivitySignUp extends AppCompatActivity implements GoogleApiClient
                 name = etName.getText().toString();
                 email = etEmail.getText().toString();
                 password = etPassword.getText().toString();
+                confirmPassword = etConfirmPassword.getText().toString();
+                licenseNumber = etLicenseNumber.getText().toString();
 
-                if (name.length() > 0 && email.length() > 0 && password.length() > 0) {
+                if (name.length() > 0 && email.length() > 0 && password.length() > 0 && confirmPassword.length() > 0 && licenseNumber.length() > 0) {
                     Log.d(TAG, "onClick: if (name.length() > 0 && email.length() > 0 && password.length() > 0) {");
 
                     if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
                         //if Email Address is Invalid..
                         Toast.makeText(ActivitySignUp.this, "Email is invalid!", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    if (!password.equals(confirmPassword)) {
+                        etConfirmPassword.setError("Passwords do not match!");
+                        Toast.makeText(ActivitySignUp.this, "Passwords do not match!", Toast.LENGTH_SHORT).show();
                         return;
                     }
                     if (isRegistrationClickable) {
@@ -187,6 +199,12 @@ public class ActivitySignUp extends AppCompatActivity implements GoogleApiClient
                         Toast.makeText(ActivitySignUp.this, "Password is none", Toast.LENGTH_SHORT).show();
 
 //                        tvPasswordError.setVisibility(View.VISIBLE);
+                    }
+                    if (confirmPassword.length() == 0) {
+                        Toast.makeText(ActivitySignUp.this, "Confirm Password is empty", Toast.LENGTH_SHORT).show();
+                    }
+                    if (licenseNumber.length() == 0) {
+                        Toast.makeText(ActivitySignUp.this, "License number is empty", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -387,55 +405,42 @@ public class ActivitySignUp extends AppCompatActivity implements GoogleApiClient
 //        userDetails.setName(userNameStr);
 //        userDetails.setProfileUrl("Error");
 
+        HashMap<String, String> map = new HashMap<>();
+        map.put("email", email);
+        map.put("name", name);
+        map.put("licenseNumber", licenseNumber);
+
         databaseReference.child("users")
                 .child(mAuth.getCurrentUser().getUid())
-                .child("email")
-                .setValue(email)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
+                .setValue(map).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
 
-                            databaseReference.child("users")
-                                    .child(mAuth.getCurrentUser().getUid())
-                                    .child("name")
-                                    .setValue(name)
-                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
+                    new Utils().storeString(ActivitySignUp.this,
+                            "nameStr", name);
+                    new Utils().storeString(ActivitySignUp.this,
+                            "emailStr", email);
+                    new Utils().storeString(ActivitySignUp.this,
+                            "licenseStr", licenseNumber);
 
-                                            if (task.isSuccessful()) {
+                    mDialog.dismiss();
 
-                                                new Utils().storeString(ActivitySignUp.this,
-                                                        "nameStr", name);
-                                                new Utils().storeString(ActivitySignUp.this,
-                                                        "emailStr", email);
+                    finish();
+                    Intent intent = new Intent(ActivitySignUp.this, BottomNavigationActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
 
-                                                mDialog.dismiss();
+                    Toast.makeText(ActivitySignUp.this, "You are signed up!", Toast.LENGTH_SHORT).show();
 
-                                                finish();
-                                                Intent intent = new Intent(ActivitySignUp.this, BottomNavigationActivity.class);
-                                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                                startActivity(intent);
+                } else {
+                    mDialog.dismiss();
+                    Toast.makeText(ActivitySignUp.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                    Log.d(TAG, "onComplete: " + task.getException().getMessage());
+                }
+            }
+        });
 
-                                                Toast.makeText(ActivitySignUp.this, "You are signed up!", Toast.LENGTH_SHORT).show();
-
-                                            } else {
-                                                mDialog.dismiss();
-                                                Toast.makeText(ActivitySignUp.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                                                Log.d(TAG, "onComplete: " + task.getException().getMessage());
-                                            }
-
-                                        }
-                                    });
-
-                        } else {
-                            mDialog.dismiss();
-                            Toast.makeText(ActivitySignUp.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                            Log.d(TAG, "onComplete: " + task.getException().getMessage());
-                        }
-                    }
-                });
     }
 
 }

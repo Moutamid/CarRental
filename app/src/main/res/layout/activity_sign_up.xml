@@ -99,6 +99,30 @@
                         android:padding="10dp"
                         android:textColor="@color/black" />
 
+                    <EditText
+                        android:id="@+id/etConfirmPassword"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_marginTop="10dp"
+                        android:background="#EFEEF4"
+                        android:gravity="center_vertical"
+                        android:hint="Confirm password"
+                        android:inputType="textPassword"
+                        android:padding="10dp"
+                        android:textColor="@color/black" />
+
+                    <EditText
+                        android:id="@+id/etLicenseNumber"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_marginTop="10dp"
+                        android:background="#EFEEF4"
+                        android:gravity="center_vertical"
+                        android:hint="License number"
+                        android:inputType="textPersonName"
+                        android:padding="10dp"
+                        android:textColor="@color/black" />
+
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

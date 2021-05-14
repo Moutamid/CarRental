@@ -152,6 +152,9 @@ public class ActivityLogin extends AppCompatActivity {
                         new Utils().storeString(ActivityLogin.this,
                                 "emailStr", snapshot.child("email").getValue(String.class));
 
+                        new Utils().storeString(ActivityLogin.this,
+                                "licenseStr", snapshot.child("licenseNumber").getValue(String.class));
+
                         mProgressDialog.dismiss();
 
                         finish();

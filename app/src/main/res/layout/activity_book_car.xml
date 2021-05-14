@@ -7,222 +7,229 @@
     android:background="@color/white"
     tools:context=".BookCarActivity">
 
-    <LinearLayout
-        android:id="@+id/top_layput_activity_bok_car"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:visibility="gone"
+        android:layout_height="match_parent">
 
-        <RelativeLayout
+        <LinearLayout
+            android:id="@+id/top_layput_activity_bok_car"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginBottom="10dp">
+            android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/car_image_view_layout_activity_bok_car"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:scaleType="centerCrop"
-                android:src="@drawable/audi" />
-
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_toEndOf="@id/car_image_view_layout_activity_bok_car"
-                android:layout_toRightOf="@id/car_image_view_layout_activity_bok_car"
-                android:orientation="vertical">
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="10dp">
 
-                <TextView
-                    android:id="@+id/name_layout_car_activity_bok_car"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ellipsize="end"
-                    android:maxLines="1"
-                    android:text="Audi R8 Tarck"
-                    android:textColor="@color/black"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
+                <ImageView
+                    android:id="@+id/car_image_view_layout_activity_bok_car"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/audi" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:orientation="horizontal">
+                    android:layout_marginStart="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_toEndOf="@id/car_image_view_layout_activity_bok_car"
+                    android:layout_toRightOf="@id/car_image_view_layout_activity_bok_car"
+                    android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/transmission_layout_car_activity_bok_car"
-                        android:layout_width="wrap_content"
+                        android:id="@+id/name_layout_car_activity_bok_car"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
                         android:maxLines="1"
-                        android:text="Automatic"
-                        android:textColor="@color/greyTextColor"
-                        android:textSize="13sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="5dp"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginEnd="5dp"
-                        android:text="-"
-                        android:textSize="13sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/model_layout_car_activity_bok_car"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:ellipsize="end"
-                        android:maxLines="1"
-                        android:text="2020"
-                        android:textColor="@color/greyTextColor"
-                        android:textSize="13sp"
-
-                        />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="5dp"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginEnd="5dp"
-                        android:text="-"
-                        android:textSize="13sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/seats_layout_car_activity_bok_car"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:ellipsize="end"
-                        android:maxLines="1"
-                        android:text="4 Seats"
-                        android:textColor="@color/greyTextColor"
-                        android:textSize="13sp" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/status_layout_car_activity_bok_car"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:ellipsize="end"
-                        android:maxLines="1"
-                        android:text="Economy"
-                        android:textColor="@color/greyTextColor"
-                        android:textSize="16sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="5dp"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginEnd="5dp"
-                        android:text="-"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/engine_layout_car_activity_bok_car"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:ellipsize="end"
-                        android:maxLines="1"
-                        android:text="Petrol"
-                        android:textColor="@color/greyTextColor"
-                        android:textSize="16sp" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/price_layout_car_activity_bok_car"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:text="$190 /Mileage"
-                        android:visibility="gone"
+                        android:text="Audi R8 Tarck"
                         android:textColor="@color/black"
-                        android:textSize="17sp"
+                        android:textSize="20sp"
                         android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginStart="5dp"
-                        android:layout_marginEnd="5dp"
-                        android:text="|"
-                        android:visibility="gone"
-                        android:textColor="@color/greyTextColor"
-                        android:textSize="18sp" />
 
                     <LinearLayout
-                        android:layout_width="80dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal"
-                        android:weightSum="2">
+                        android:layout_marginTop="5dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/transmission_layout_car_activity_bok_car"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:text="Automatic"
+                            android:textColor="@color/greyTextColor"
+                            android:textSize="13sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginEnd="5dp"
+                            android:text="-"
+                            android:textSize="13sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/model_layout_car_activity_bok_car"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:text="2020"
+                            android:textColor="@color/greyTextColor"
+                            android:textSize="13sp"
+
+                            />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginEnd="5dp"
+                            android:text="-"
+                            android:textSize="13sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/seats_layout_car_activity_bok_car"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:text="4 Seats"
+                            android:textColor="@color/greyTextColor"
+                            android:textSize="13sp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/status_layout_car_activity_bok_car"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:text="Economy"
+                            android:textColor="@color/greyTextColor"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginEnd="5dp"
+                            android:text="-"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/engine_layout_car_activity_bok_car"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:text="Petrol"
+                            android:textColor="@color/greyTextColor"
+                            android:textSize="16sp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/price_layout_car_activity_bok_car"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:text="$190 /Mileage"
+                            android:textColor="@color/black"
+                            android:textSize="17sp"
+                            android:textStyle="bold"
+                            android:visibility="gone" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginEnd="5dp"
+                            android:text="|"
+                            android:textColor="@color/greyTextColor"
+                            android:textSize="18sp"
+                            android:visibility="gone" />
 
                         <LinearLayout
-                            android:id="@+id/ac_layout_car_activity_bok_car"
-                            android:layout_width="0dp"
+                            android:layout_width="80dp"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:orientation="vertical"
-                            android:visibility="invisible">
+                            android:layout_gravity="center_vertical"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            android:weightSum="2">
 
-                            <ImageView
-                                android:layout_width="15dp"
-                                android:layout_height="15dp"
-                                android:src="@drawable/ic_baseline_ac_unit_24" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
+                            <LinearLayout
+                                android:id="@+id/ac_layout_car_activity_bok_car"
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:maxLines="1"
-                                android:text="AC" />
+                                android:layout_gravity="center"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:orientation="vertical"
+                                android:visibility="invisible">
 
-                        </LinearLayout>
+                                <ImageView
+                                    android:layout_width="15dp"
+                                    android:layout_height="15dp"
+                                    android:src="@drawable/ic_baseline_ac_unit_24" />
 
-                        <LinearLayout
-                            android:id="@+id/gps_layout_car_activity_bok_car"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:orientation="vertical"
-                            android:visibility="invisible">
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:maxLines="1"
+                                    android:text="AC" />
 
-                            <ImageView
-                                android:layout_width="15dp"
-                                android:layout_height="15dp"
-                                android:src="@drawable/ic_baseline_gps_fixed_24" />
+                            </LinearLayout>
 
-                            <TextView
-                                android:layout_width="wrap_content"
+                            <LinearLayout
+                                android:id="@+id/gps_layout_car_activity_bok_car"
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:maxLines="1"
-                                android:text="GPS" />
+                                android:layout_gravity="center"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:orientation="vertical"
+                                android:visibility="invisible">
+
+                                <ImageView
+                                    android:layout_width="15dp"
+                                    android:layout_height="15dp"
+                                    android:src="@drawable/ic_baseline_gps_fixed_24" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:maxLines="1"
+                                    android:text="GPS" />
+
+                            </LinearLayout>
 
                         </LinearLayout>
 
@@ -230,163 +237,164 @@
 
                 </LinearLayout>
 
-            </LinearLayout>
-
-        </RelativeLayout>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-            android:text="Description"
-            android:textColor="@color/greyTextColor"
-            android:textSize="18sp" />
-
-    </LinearLayout>
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@id/bottom_layout_activity_book_car"
-        android:layout_below="@id/top_layput_activity_bok_car">
-
-        <TextView
-            android:id="@+id/car_description_activity_bok_car"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="20dp"
-            android:text="With a fuel consumption of 6.2 litres/100km - 46 mpg UK - 38 mpg US (Average), 0 to 100 km/h (62mph) in 6.9 seconds, a maximum top speed of 155 mph (250 km/h), a curb weight of 3693 lbs (1675 kgs), the A7 Sportback (C8) 45 TFSI has a turbocharged Inline 4 cylinder engine, Petrol motor."
-            android:textColor="@color/lightBlackSpotify"
-            android:textSize="16sp" />
-
-
-    </ScrollView>
-
-    <LinearLayout
-        android:id="@+id/bottom_layout_activity_book_car"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="20dp"
-        android:orientation="vertical">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:padding="5dp">
-
-            <ImageView
-                android:id="@+id/minus_btn_activity_bok_car"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:elevation="10dp"
-                android:src="@drawable/minus" />
+            </RelativeLayout>
 
             <TextView
-                android:id="@+id/current_mileages_activity_bok_car"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="30dp"
-                android:layout_marginEnd="30dp"
-                android:text="5 mil"
-                android:textColor="@color/black"
-                android:textSize="25sp"
-                android:textStyle="bold" />
-
-            <ImageView
-                android:id="@+id/plus_btn_activity_bok_car"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:elevation="10dp"
-                android:src="@drawable/plus" />
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:text="Description"
+                android:textColor="@color/greyTextColor"
+                android:textSize="18sp" />
 
         </LinearLayout>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="30dp"
-            android:text="Add as much mileages as you want"
-            android:textColor="@color/greyTextColor"
-            android:textSize="13sp" />
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/bottom_layout_activity_book_car"
+            android:layout_below="@id/top_layput_activity_bok_car">
 
-        <RelativeLayout
+            <TextView
+                android:id="@+id/car_description_activity_bok_car"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="20dp"
+                android:text="With a fuel consumption of 6.2 litres/100km - 46 mpg UK - 38 mpg US (Average), 0 to 100 km/h (62mph) in 6.9 seconds, a maximum top speed of 155 mph (250 km/h), a curb weight of 3693 lbs (1675 kgs), the A7 Sportback (C8) 45 TFSI has a turbocharged Inline 4 cylinder engine, Petrol motor."
+                android:textColor="@color/lightBlackSpotify"
+                android:textSize="16sp" />
+
+
+        </ScrollView>
+
+        <LinearLayout
+            android:id="@+id/bottom_layout_activity_book_car"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="40dp">
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="20dp"
+            android:orientation="vertical">
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="start"
-                android:orientation="vertical">
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="5dp">
+
+                <ImageView
+                    android:id="@+id/minus_btn_activity_bok_car"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:elevation="10dp"
+                    android:src="@drawable/minus" />
 
                 <TextView
+                    android:id="@+id/current_mileages_activity_bok_car"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="~ $10"
-                    android:id="@+id/per_mileage_rate_activity_book_car"
-                    android:textColor="@color/goldenrodd"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="per mileage"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginEnd="30dp"
+                    android:text="5 mil"
                     android:textColor="@color/black"
-                    android:textSize="15sp"
+                    android:textSize="25sp"
                     android:textStyle="bold" />
+
+                <ImageView
+                    android:id="@+id/plus_btn_activity_bok_car"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:elevation="10dp"
+                    android:src="@drawable/plus" />
 
             </LinearLayout>
 
-            <LinearLayout
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:gravity="end"
-                android:orientation="vertical">
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="30dp"
+                android:text="Add as much mileages as you want"
+                android:textColor="@color/greyTextColor"
+                android:textSize="13sp" />
 
-                <TextView
-                    android:id="@+id/total_cost_activity_bok_car"
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="40dp">
+
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="$50"
-                    android:textColor="@color/goldenrodd"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
+                    android:gravity="start"
+                    android:orientation="vertical">
 
-                <TextView
+                    <TextView
+                        android:id="@+id/per_mileage_rate_activity_book_car"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="~ $10"
+                        android:textColor="@color/goldenrodd"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="per mileage"
+                        android:textColor="@color/black"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="total payment"
-                    android:textColor="@color/black"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:gravity="end"
+                    android:orientation="vertical">
 
-            </LinearLayout>
+                    <TextView
+                        android:id="@+id/total_cost_activity_bok_car"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="$50"
+                        android:textColor="@color/goldenrodd"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
 
-        </RelativeLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="total payment"
+                        android:textColor="@color/black"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:background="@drawable/bg_get_started_btn"
-            android:text="Request booking"
-            android:textAllCaps="false"
-            android:textColor="@color/white" />
+                </LinearLayout>
 
-    </LinearLayout>
+            </RelativeLayout>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/request_booking_car_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/bg_get_started_btn"
+                android:text="Request booking"
+                android:textAllCaps="false"
+                android:textColor="@color/white" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
 
 </RelativeLayout>

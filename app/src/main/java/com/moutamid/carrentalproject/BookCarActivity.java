@@ -4,9 +4,12 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -14,6 +17,9 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -28,7 +34,10 @@ public class BookCarActivity extends AppCompatActivity {
             engine, price, description, perMileageRate, totalCostTv, currentMileageTv;
     private LinearLayout ac, gps;
 
+    private Utils utils = new Utils();
+
     private ImageView plusBtn, minusBtn;
+    private Button requestButton;
 
     private CarModel carModel;
 
@@ -57,6 +66,7 @@ public class BookCarActivity extends AppCompatActivity {
         plusBtn = findViewById(R.id.plus_btn_activity_bok_car);
         minusBtn = findViewById(R.id.minus_btn_activity_bok_car);
         currentMileageTv = findViewById(R.id.current_mileages_activity_bok_car);
+        requestButton = findViewById(R.id.request_booking_car_btn);
 
         progressDialog = new ProgressDialog(BookCarActivity.this);
         progressDialog.setCancelable(true);
@@ -133,8 +143,45 @@ public class BookCarActivity extends AppCompatActivity {
 
         plusBtn.setOnClickListener(plusBtnClickListener());
         minusBtn.setOnClickListener(minusBtnClickListener());
+        requestButton.setOnClickListener(requestButtonClickListener());
 
         progressDialog.dismiss();
+    }
+
+    private View.OnClickListener requestButtonClickListener() {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (!utils.getStoredBoolean(BookCarActivity.this, "alreadyBooked")){
+                    Toast.makeText(BookCarActivity.this, "You can only apply for one booking at a time!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                utils.showDialog(BookCarActivity.this,
+                        "Are you sure?",
+                        "Do you really want to book this car for "
+                        +currentMileageTv.getText().toString()
+                        +" in " + totalCostTv.getText().toString(),
+                        "Yes",
+                        "No",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                                requestABookingOfCar(dialogInterface);
+
+//                                dialogInterface.dismiss();
+                            }
+                        }, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                            }
+                        }, true);
+
+            }
+        };
     }
 
     private View.OnClickListener minusBtnClickListener() {
@@ -293,6 +340,152 @@ public class BookCarActivity extends AppCompatActivity {
         }
 
         CarModel() {
+        }
+    }
+
+    private void requestABookingOfCar(final DialogInterface dialogInterface) {
+        progressDialog.show();
+
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+
+        String name = utils.getStoredString(BookCarActivity.this, "nameStr");
+//        String email = utils.getStoredString(BookCarActivity.this, "emailStr");
+        String license = utils.getStoredString(BookCarActivity.this, "licenseStr");
+
+        RequestBookingModel model = new RequestBookingModel();
+        model.setTotalCost(totalCost);
+        model.setTotalMileages(currentMileageInt);
+        model.setStatus("pending");
+        model.setLicenseNumber(license);
+        model.setMyUid(auth.getCurrentUser().getUid());
+        model.setMyName(name);
+        model.setCarImageUrl(carModel.getImageUrl());
+        model.setCarName(carModel.getName());
+        model.setCarKey(carModel.getCarKey());
+
+        databaseReference.child("requests").child(auth.getCurrentUser().getUid())
+                .setValue(model).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+
+                if (task.isSuccessful()) {
+
+                    progressDialog.dismiss();
+                    dialogInterface.dismiss();
+
+                    Toast.makeText(BookCarActivity.this,
+                            "Your request has been submitted successfully!"
+                            , Toast.LENGTH_SHORT).show();
+
+                    utils.storeBoolean(BookCarActivity.this, "alreadyBooked", true);
+
+                    Intent intent = new Intent(BookCarActivity.this, BottomNavigationActivity.class);
+                    intent.putExtra("fromBookingActivity", true);
+                    finish();
+                    startActivity(intent);
+
+                } else {
+                    progressDialog.dismiss();
+                    Toast.makeText(BookCarActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
+    }
+
+    private static class RequestBookingModel {
+
+        private String carKey, carName, carImageUrl, myName, myUid,
+                licenseNumber, status;
+        private int totalMileages, totalCost;
+
+        public RequestBookingModel(String carKey, String carName, String carImageUrl, String myName, String myUid, String licenseNumber, String status, int totalMileages, int totalCost) {
+            this.carKey = carKey;
+            this.carName = carName;
+            this.carImageUrl = carImageUrl;
+            this.myName = myName;
+            this.myUid = myUid;
+            this.licenseNumber = licenseNumber;
+            this.status = status;
+            this.totalMileages = totalMileages;
+            this.totalCost = totalCost;
+        }
+
+        public String getCarName() {
+            return carName;
+        }
+
+        public void setCarName(String carName) {
+            this.carName = carName;
+        }
+
+        public String getCarImageUrl() {
+            return carImageUrl;
+        }
+
+        public void setCarImageUrl(String carImageUrl) {
+            this.carImageUrl = carImageUrl;
+        }
+
+        public int getTotalMileages() {
+            return totalMileages;
+        }
+
+        public void setTotalMileages(int totalMileages) {
+            this.totalMileages = totalMileages;
+        }
+
+        public int getTotalCost() {
+            return totalCost;
+        }
+
+        public void setTotalCost(int totalCost) {
+            this.totalCost = totalCost;
+        }
+
+        public String getStatus() {
+            return status;
+        }
+
+        public void setStatus(String status) {
+            this.status = status;
+        }
+
+        public String getLicenseNumber() {
+            return licenseNumber;
+        }
+
+        public void setLicenseNumber(String licenseNumber) {
+            this.licenseNumber = licenseNumber;
+        }
+
+        public String getCarKey() {
+            return carKey;
+        }
+
+        public void setCarKey(String carKey) {
+            this.carKey = carKey;
+        }
+
+        public String getMyName() {
+            return myName;
+        }
+
+        public void setMyName(String myName) {
+            this.myName = myName;
+        }
+
+        public String getMyUid() {
+            return myUid;
+        }
+
+        public void setMyUid(String myUid) {
+            this.myUid = myUid;
+        }
+
+        RequestBookingModel() {
         }
     }
 

@@ -70,6 +70,11 @@ public class BottomNavigationActivity extends AppCompatActivity {
             }
         });
 
+        if (getIntent().hasExtra("fromBookingActivity")) {
+
+            viewPager.setCurrentItem(2, true);
+
+        }
     }
 
     private void setupViewPager(ViewPager viewPager) {
