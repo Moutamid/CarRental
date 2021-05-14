@@ -13,10 +13,10 @@
         android:icon="@drawable/ic_outline_home_24"
         android:title="Home" />
 
-    <item
-        android:id="@+id/item_booking_history"
-        android:icon="@drawable/ic_baseline_history_24"
-        android:title="Booking History" />
+<!--    <item-->
+<!--        android:id="@+id/item_booking_history"-->
+<!--        android:icon="@drawable/ic_baseline_history_24"-->
+<!--        android:title="Booking History" />-->
 
     <item
         android:id="@+id/item_request_status"

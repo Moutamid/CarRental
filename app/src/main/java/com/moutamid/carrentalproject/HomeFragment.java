@@ -72,9 +72,10 @@ public class HomeFragment extends Fragment {
 
                 initRecyclerView();
 
-                setDetailsOnFirstDeal();
-                setDetailsOnSecondDeal();
-                setDetailsOnThirdDeal();
+//                if (getActivity()!=null) {
+//
+//
+//                }
 
             }
 
@@ -237,6 +238,14 @@ public class HomeFragment extends Fragment {
 
         conversationRecyclerView.setAdapter(adapter);
 
+        if (getActivity()!=null) {
+
+            setDetailsOnFirstDeal();
+            setDetailsOnSecondDeal();
+            setDetailsOnThirdDeal();
+
+        }
+
         if (adapter.getItemCount() != 0) {
 
             ProgressBar progressBar = view.findViewById(R.id.progress_bar_home);
@@ -246,6 +255,7 @@ public class HomeFragment extends Fragment {
             //        chatsRecyclerView.setVisibility(View.VISIBLE);
 
         }
+
 
     }
 

@@ -72,7 +72,7 @@ public class BottomNavigationActivity extends AppCompatActivity {
 
         if (getIntent().hasExtra("fromBookingActivity")) {
 
-            viewPager.setCurrentItem(2, true);
+            viewPager.setCurrentItem(1, true);
 
         }
     }
@@ -81,12 +81,12 @@ public class BottomNavigationActivity extends AppCompatActivity {
 
         // Adding Fragments to Adapter
         adapter.addFragment(new HomeFragment());
-        adapter.addFragment(new BookingHistoryFragment());
+//        adapter.addFragment(new BookingHistoryFragment());
         adapter.addFragment(new RequestStatusFragment());
         adapter.addFragment(new TrackerFragment());
 
         // Setting Adapter To ViewPager
-        viewPager.setOffscreenPageLimit(4);
+        viewPager.setOffscreenPageLimit(3);
         viewPager.setAdapter(adapter);
 
         Log.d(TAG, "setupViewPager: adapter attached");
@@ -104,7 +104,6 @@ public class BottomNavigationActivity extends AppCompatActivity {
                     case 0:
                     case 1:
                     case 2:
-                    case 3:
                         smoothBottomBar.setItemActiveIndex(position);
                         break;
                     default:

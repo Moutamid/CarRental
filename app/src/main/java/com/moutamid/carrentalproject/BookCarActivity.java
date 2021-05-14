@@ -153,7 +153,7 @@ public class BookCarActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                if (!utils.getStoredBoolean(BookCarActivity.this, "alreadyBooked")){
+                if (utils.getStoredBoolean(BookCarActivity.this, "alreadyBooked")){
                     Toast.makeText(BookCarActivity.this, "You can only apply for one booking at a time!", Toast.LENGTH_SHORT).show();
                     return;
                 }
