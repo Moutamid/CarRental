@@ -18,8 +18,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class ActivityLogin extends AppCompatActivity {
 
@@ -41,9 +44,9 @@ public class ActivityLogin extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         if (mAuth.getCurrentUser() != null) {
             finish();
-//            Intent intent = new Intent(ActivityLogin.this, BottomNavigationActivity.class);
-//            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//            startActivity(intent);
+            Intent intent = new Intent(ActivityLogin.this, BottomNavigationActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
             return;
         }
 
@@ -134,38 +137,38 @@ public class ActivityLogin extends AppCompatActivity {
     }
 
     private void getUserdetails() {
-//        mDatabaseUsers.child(mAuth.getCurrentUser().getUid())
-//                .addListenerForSingleValueEvent(new ValueEventListener() {
-//                    @Override
-//                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-//
-//                        if (!snapshot.exists()) {
-//                            return;
-//                        }
-//
-//                        new Utils().storeString(ActivityLogin.this,
-//                                "usernameStr", snapshot.child("name").getValue(String.class));
-//
-//                        new Utils().storeString(ActivityLogin.this,
-//                                "profileUrl", snapshot.child("profileUrl").getValue(String.class));
+        mDatabaseUsers.child(mAuth.getCurrentUser().getUid())
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-        mProgressDialog.dismiss();
+                        if (!snapshot.exists()) {
+                            return;
+                        }
 
-//                        finish();
-//                        Intent intent = new Intent(ActivityLogin.this, BottomNavigationActivity.class);
-//                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                        startActivity(intent);
+                        new Utils().storeString(ActivityLogin.this,
+                                "nameStr", snapshot.child("name").getValue(String.class));
 
-        Toast.makeText(ActivityLogin.this, "You are logged in!", Toast.LENGTH_SHORT).show();
+                        new Utils().storeString(ActivityLogin.this,
+                                "emailStr", snapshot.child("email").getValue(String.class));
 
-//                    }
-//
-//                    @Override
-//                    public void onCancelled(@NonNull DatabaseError error) {
-//                        mProgressDialog.dismiss();
-//                        Toast.makeText(ActivityLogin.this, error.getMessage(), Toast.LENGTH_SHORT).show();
-//                    }
-//                });
+                        mProgressDialog.dismiss();
+
+                        finish();
+                        Intent intent = new Intent(ActivityLogin.this, BottomNavigationActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
+
+                        Toast.makeText(ActivityLogin.this, "You are logged in!", Toast.LENGTH_SHORT).show();
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        mProgressDialog.dismiss();
+                        Toast.makeText(ActivityLogin.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
 
     }
 

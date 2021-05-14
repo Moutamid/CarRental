@@ -2,7 +2,6 @@ package com.moutamid.carrentalproject;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -14,7 +13,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -22,9 +20,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
-import com.google.android.gms.common.api.Api;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.GoogleApiClient.Builder;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.safetynet.SafetyNet;
@@ -52,7 +48,7 @@ public class ActivitySignUp extends AppCompatActivity implements GoogleApiClient
     //
     private FirebaseAuth mAuth;
     //
-    private DatabaseReference mDatabaseUsers;
+    private DatabaseReference databaseReference;
 //
 //    private String userNameStr;
 //
@@ -83,9 +79,9 @@ public class ActivitySignUp extends AppCompatActivity implements GoogleApiClient
         mAuth = FirebaseAuth.getInstance();
         if (mAuth.getCurrentUser() != null) {
             finish();
-//            Intent intent = new Intent(ActivitySignUp.this, BottomNavigationActivity.class);
-//            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//            startActivity(intent);
+            Intent intent = new Intent(ActivitySignUp.this, BottomNavigationActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
             return;
         }
 
@@ -207,8 +203,8 @@ public class ActivitySignUp extends AppCompatActivity implements GoogleApiClient
                     }
                 });
 
-        mDatabaseUsers = FirebaseDatabase.getInstance().getReference();
-        mDatabaseUsers.keepSynced(true);
+        databaseReference = FirebaseDatabase.getInstance().getReference();
+        databaseReference.keepSynced(true);
 
         mDialog = new ProgressDialog(this);
         mDialog.setCancelable(false);
@@ -359,75 +355,6 @@ public class ActivitySignUp extends AppCompatActivity implements GoogleApiClient
 
     }
 
-//    private View.OnClickListener signUpBtnListener() {
-//        return new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-////                mDialog.show();
-//                checkStatusOfEditTexts();
-//            }
-//        };
-//    }
-
-//    private void checkStatusOfEditTexts() {
-//
-//        // Getting strings from edit texts
-//        userNameStr = userNameEditText.getText().toString();
-//        emailStr = emailEditText.getText().toString();
-//        passwordStr = passwordEditText.getText().toString();
-//        confirmedPasswordStr = confirmPasswordEditText.getText().toString();
-//
-//        if (TextUtils.isEmpty(userNameStr)) {
-//            mDialog.dismiss();
-//            userNameEditText.setError("Username is empty");
-//            userNameEditText.requestFocus();
-//            return;
-//        }
-//
-//        // Checking if Fields are empty or not
-//        if (!TextUtils.isEmpty(emailStr) && !TextUtils.isEmpty(passwordStr) && !TextUtils.isEmpty(confirmedPasswordStr)) {
-//
-//            // Checking if passwordStr is equal to confirmed Password
-//            if (passwordStr.equals(confirmedPasswordStr)) {
-//
-
-    //
-//            } else {
-//
-//                mDialog.dismiss();
-//                confirmPasswordEditText.setError("Password does not match!");
-//                confirmPasswordEditText.requestFocus();
-//
-//            }
-//
-//            // User Name is Empty
-//        } else if (TextUtils.isEmpty(emailStr)) {
-//
-//            mDialog.dismiss();
-//            emailEditText.setError("Please provide a emailStr");
-//            emailEditText.requestFocus();
-//
-//
-//            // Password is Empty
-//        } else if (TextUtils.isEmpty(passwordStr)) {
-//
-//            mDialog.dismiss();
-//            passwordEditText.setError("Please provide a passwordStr");
-//            passwordEditText.requestFocus();
-//
-//
-//            // Confirm Password is Empty
-//        } else if (TextUtils.isEmpty(confirmedPasswordStr)) {
-//
-//            mDialog.dismiss();
-//            confirmPasswordEditText.setError("Please confirm your passwordStr");
-//            confirmPasswordEditText.requestFocus();
-//
-//
-//        }
-//
-//    }
-//
     private void signUpUserWithNameAndPassword() {
 
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -436,11 +363,11 @@ public class ActivitySignUp extends AppCompatActivity implements GoogleApiClient
 
                 if (task.isSuccessful()) {
 
-                    mDialog.dismiss();
+//                    mDialog.dismiss();
 
-                    Toast.makeText(ActivitySignUp.this, "You are signed in", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(ActivitySignUp.this, "You are signed in", Toast.LENGTH_SHORT).show();
 
-//                    addUserDetailsToDatabase();
+                    addUserDetailsToDatabase();
 
                 } else {
 
@@ -452,80 +379,63 @@ public class ActivitySignUp extends AppCompatActivity implements GoogleApiClient
 //        }
 
     }
-//
-//    private static class UserDetails {
-//
-//        private String name, email, profileUrl;
-//
-//        public String getName() {
-//            return name;
-//        }
-//
-//        public void setName(String name) {
-//            this.name = name;
-//        }
-//
-//        public String getEmail() {
-//            return email;
-//        }
-//
-//        public void setEmail(String email) {
-//            this.email = email;
-//        }
-//
-//        public String getProfileUrl() {
-//            return profileUrl;
-//        }
-//
-//        public void setProfileUrl(String profileUrl) {
-//            this.profileUrl = profileUrl;
-//        }
-//
-//        public UserDetails(String name, String email, String profileUrl) {
-//            this.name = name;
-//            this.email = email;
-//            this.profileUrl = profileUrl;
-//        }
-//
-//        UserDetails() {
-//        }
-//    }
-//
-//    private void addUserDetailsToDatabase() {
-//
+
+    private void addUserDetailsToDatabase() {
+
 //        UserDetails userDetails = new UserDetails();
 //        userDetails.setEmail(emailStr);
 //        userDetails.setName(userNameStr);
 //        userDetails.setProfileUrl("Error");
-//
-//        mDatabaseUsers.child("users").child(mAuth.getCurrentUser().getUid())
-//                .setValue(userDetails).addOnCompleteListener(new OnCompleteListener<Void>() {
-//            @Override
-//            public void onComplete(@NonNull Task<Void> task) {
-//
-//                if (task.isSuccessful()) {
-//
-//                    new Utils().storeString(ActivitySignUp.this,
-//                            "usernameStr", userNameStr);
-//
-//                    mDialog.dismiss();
-//
-//                    finish();
-//                    Intent intent = new Intent(ActivitySignUp.this, BottomNavigationActivity.class);
-//                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                    startActivity(intent);
-//
-//                    Toast.makeText(ActivitySignUp.this, "You are signed up!", Toast.LENGTH_SHORT).show();
-//
-//                } else {
-//                    mDialog.dismiss();
-//                    Toast.makeText(ActivitySignUp.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-//                    Log.d(TAG, "onComplete: " + task.getException().getMessage());
-//                }
-//
-//            }
-//        });
-//
-//    }
+
+        databaseReference.child("users")
+                .child(mAuth.getCurrentUser().getUid())
+                .child("email")
+                .setValue(email)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+
+                            databaseReference.child("users")
+                                    .child(mAuth.getCurrentUser().getUid())
+                                    .child("name")
+                                    .setValue(name)
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+
+                                            if (task.isSuccessful()) {
+
+                                                new Utils().storeString(ActivitySignUp.this,
+                                                        "nameStr", name);
+                                                new Utils().storeString(ActivitySignUp.this,
+                                                        "emailStr", email);
+
+                                                mDialog.dismiss();
+
+                                                finish();
+                                                Intent intent = new Intent(ActivitySignUp.this, BottomNavigationActivity.class);
+                                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                                startActivity(intent);
+
+                                                Toast.makeText(ActivitySignUp.this, "You are signed up!", Toast.LENGTH_SHORT).show();
+
+                                            } else {
+                                                mDialog.dismiss();
+                                                Toast.makeText(ActivitySignUp.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                                Log.d(TAG, "onComplete: " + task.getException().getMessage());
+                                            }
+
+                                        }
+                                    });
+
+                        } else {
+                            mDialog.dismiss();
+                            Toast.makeText(ActivitySignUp.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            Log.d(TAG, "onComplete: " + task.getException().getMessage());
+                        }
+                    }
+                });
+    }
 
 }

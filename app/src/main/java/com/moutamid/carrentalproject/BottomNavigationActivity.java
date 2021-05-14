@@ -20,6 +20,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.tbuonomo.viewpagerdotsindicator.SpringDotsIndicator;
 
 import java.lang.reflect.Field;
@@ -41,6 +42,15 @@ public class BottomNavigationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         setContentView(R.layout.activity_bottom_navigation);
+
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        if (mAuth.getCurrentUser() == null) {
+            finish();
+            Intent intent = new Intent(BottomNavigationActivity.this, MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            return;
+        }
 
         viewPager = findViewById(R.id.bottom_navigation_view_pager);
         smoothBottomBar = findViewById(R.id.bottom_navigation_Bar);

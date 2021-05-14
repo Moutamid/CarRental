@@ -1,5 +1,6 @@
 package com.moutamid.carrentalproject;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -111,7 +112,10 @@ public class HomeFragment extends Fragment {
         linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getActivity(), carsArrayList.get(0).getCarKey(), Toast.LENGTH_SHORT).show();
+
+                Intent intent = new Intent(getActivity(), BookCarActivity.class);
+                intent.putExtra("key", carsArrayList.get(0).getCarKey());
+                startActivity(intent);
             }
         });
 
@@ -142,7 +146,9 @@ public class HomeFragment extends Fragment {
         linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getActivity(), carsArrayList.get(1).getCarKey(), Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getActivity(), BookCarActivity.class);
+                intent.putExtra("key", carsArrayList.get(1).getCarKey());
+                startActivity(intent);
             }
         });
 
@@ -173,7 +179,9 @@ public class HomeFragment extends Fragment {
         linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getActivity(), carsArrayList.get(2).getCarKey(), Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getActivity(), BookCarActivity.class);
+                intent.putExtra("key", carsArrayList.get(2).getCarKey());
+                startActivity(intent);
             }
         });
 
@@ -263,7 +271,9 @@ public class HomeFragment extends Fragment {
             holder.parentLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(getActivity(), carModel.getCarKey() + "", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(getActivity(), BookCarActivity.class);
+                    intent.putExtra("key", carModel.getCarKey());
+                    startActivity(intent);
                 }
             });
 

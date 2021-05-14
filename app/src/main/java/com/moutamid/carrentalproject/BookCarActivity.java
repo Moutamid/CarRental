@@ -3,6 +3,7 @@ package com.moutamid.carrentalproject;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -33,6 +34,7 @@ public class BookCarActivity extends AppCompatActivity {
 
     private int currentMileageInt = 5;
     private int totalCost;
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +42,7 @@ public class BookCarActivity extends AppCompatActivity {
         setContentView(R.layout.activity_book_car);
 
         carImage = findViewById(R.id.car_image_view_layout_activity_bok_car);
-        name = findViewById(R.id.name_layout_car_home);
+        name = findViewById(R.id.name_layout_car_activity_bok_car);
         transmission = findViewById(R.id.transmission_layout_car_activity_bok_car);
         model = findViewById(R.id.model_layout_car_activity_bok_car);
         seats = findViewById(R.id.seats_layout_car_activity_bok_car);
@@ -56,8 +58,14 @@ public class BookCarActivity extends AppCompatActivity {
         minusBtn = findViewById(R.id.minus_btn_activity_bok_car);
         currentMileageTv = findViewById(R.id.current_mileages_activity_bok_car);
 
+        progressDialog = new ProgressDialog(BookCarActivity.this);
+        progressDialog.setCancelable(true);
+        progressDialog.setMessage("Loading...");
+        progressDialog.show();
+
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
 
+//        String key = "-M_VDfYhPGwzV3ebjyWY";
         String key = getIntent().getStringExtra("key");
 
         databaseReference.child("cars").child(key).addListenerForSingleValueEvent(
@@ -77,6 +85,7 @@ public class BookCarActivity extends AppCompatActivity {
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
+                        progressDialog.dismiss();
                         Log.d(TAG, "onCancelled: " + error.getMessage());
                     }
                 }
@@ -124,6 +133,8 @@ public class BookCarActivity extends AppCompatActivity {
 
         plusBtn.setOnClickListener(plusBtnClickListener());
         minusBtn.setOnClickListener(minusBtnClickListener());
+
+        progressDialog.dismiss();
     }
 
     private View.OnClickListener minusBtnClickListener() {
