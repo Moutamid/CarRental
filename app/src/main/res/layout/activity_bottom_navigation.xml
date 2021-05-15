@@ -26,6 +26,7 @@
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:layout_alignParentBottom="true"
+        android:elevation="20dp"
         app:backgroundColor="@color/goldenrodd"
         app:menu="@menu/menu" />
 
