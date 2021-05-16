@@ -33,6 +33,7 @@
         android:layout_marginTop="20dp"
         android:gravity="center"
         android:text="Tracker"
+        android:id="@+id/trackerTextview"
         android:textColor="@color/black"
         android:textSize="20sp"
         android:textStyle="bold" />

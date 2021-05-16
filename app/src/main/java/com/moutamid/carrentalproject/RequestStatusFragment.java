@@ -100,8 +100,8 @@ public class RequestStatusFragment extends Fragment {
 
                 if (!snapshot.exists()) {
                     progressBar.setVisibility(View.GONE);
-                    if (getActivity()!=null)
-                    Toast.makeText(getActivity(), "No request exists!", Toast.LENGTH_SHORT).show();
+                    if (getActivity() != null)
+                        Toast.makeText(getActivity(), "No request exists!", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
