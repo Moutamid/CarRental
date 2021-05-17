@@ -299,11 +299,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="30dp"
                     android:layout_marginEnd="30dp"
-                    android:text="5 mil"
+                    android:text="1 mil"
                     android:textColor="@color/black"
                     android:textSize="25sp"
                     android:textStyle="bold" />
-
+<!--TODO: 5 mil-->
                 <ImageView
                     android:id="@+id/plus_btn_activity_bok_car"
                     android:layout_width="80dp"

@@ -41,7 +41,7 @@ public class BookCarActivity extends AppCompatActivity {
 
     private CarModel carModel;
 
-    private int currentMileageInt = 5;
+    private int currentMileageInt = 1;//TODO: 5
     private int totalCost;
     private ProgressDialog progressDialog;
 
@@ -189,12 +189,12 @@ public class BookCarActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                if (currentMileageInt == 5) {
-                    Toast.makeText(BookCarActivity.this, "You can't book for lower than 5 mileages!", Toast.LENGTH_SHORT).show();
+                if (currentMileageInt == 1) {//TODO:5
+                    Toast.makeText(BookCarActivity.this, "You can't book for lower than 1 mileages!", Toast.LENGTH_SHORT).show();//TODO:5 mileages
                     return;
                 }
 
-                currentMileageInt = currentMileageInt - 5;
+                currentMileageInt = currentMileageInt - 1;//TODO:5
 
                 totalCost = Integer.parseInt(carModel.getPerDayRate()) * currentMileageInt;
 
@@ -211,7 +211,7 @@ public class BookCarActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                currentMileageInt = currentMileageInt + 5;
+                currentMileageInt = currentMileageInt + 1;//TODO:5
 
                 totalCost = Integer.parseInt(carModel.getPerDayRate()) * currentMileageInt;
 
