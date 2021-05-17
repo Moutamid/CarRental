@@ -227,6 +227,7 @@ public class TrackerFragment extends Fragment {
 
         setStartDriveBtnCLickListener();
 
+
         return view;
     }
 
