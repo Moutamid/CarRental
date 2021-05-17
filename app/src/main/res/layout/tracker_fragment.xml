@@ -39,11 +39,13 @@
             android:layout_width="match_parent"
             android:layout_height="150dp"
             android:layout_margin="20dp"
+            android:id="@+id/car_image_view_tracker"
             android:scaleType="centerInside"
             android:src="@drawable/audi" />
 
         <TextView
             android:layout_width="match_parent"
+            android:id="@+id/car_name_tracker"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:gravity="center_horizontal"
@@ -52,6 +54,7 @@
             android:textSize="20sp" />
 
         <TextView
+            android:id="@+id/my_car_name_tracker"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -184,6 +187,7 @@
                         android:autoSizeTextType="uniform"
                         android:breakStrategy="balanced"
                         android:gravity="start"
+                        android:id="@+id/total_mileages_tracker"
                         android:maxLines="1"
                         android:text="loading"
                         android:textColor="@color/black"
