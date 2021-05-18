@@ -52,6 +52,14 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.home_fragment, container, false);
 
+        view.findViewById(R.id.settings_btn_home_fragment).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (getActivity() != null)
+                    getActivity().startActivity(new Intent(getActivity(), SettingsActivity.class));
+            }
+        });
+
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
 
         databaseReference.child("cars").addListenerForSingleValueEvent(new ValueEventListener() {
@@ -238,7 +246,7 @@ public class HomeFragment extends Fragment {
 
         conversationRecyclerView.setAdapter(adapter);
 
-        if (getActivity()!=null) {
+        if (getActivity() != null) {
 
             setDetailsOnFirstDeal();
             setDetailsOnSecondDeal();

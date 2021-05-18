@@ -7,6 +7,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -19,12 +20,18 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.datepicker.MaterialDatePicker;
+import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.TimeZone;
 
 public class BookCarActivity extends AppCompatActivity {
     private static final String TAG = "BookCarActivity";
@@ -44,6 +51,13 @@ public class BookCarActivity extends AppCompatActivity {
     private int currentMileageInt = 1;//TODO: 5
     private int totalCost;
     private ProgressDialog progressDialog;
+
+    private TextView startDatePickerLayout, endDatePickerLayout;
+
+    private Calendar calendar;
+    private long today;
+
+    private String startDateString, endDateString;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +81,15 @@ public class BookCarActivity extends AppCompatActivity {
         minusBtn = findViewById(R.id.minus_btn_activity_bok_car);
         currentMileageTv = findViewById(R.id.current_mileages_activity_bok_car);
         requestButton = findViewById(R.id.request_booking_car_btn);
+
+        startDatePickerLayout = findViewById(R.id.start_date_picker_layout);
+        endDatePickerLayout = findViewById(R.id.end_date_picker_layout);
+
+        calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+        calendar.clear();
+
+        startDatePickerLayout.setOnClickListener(startDatePickerLayoutCLickListener());
+        endDatePickerLayout.setOnClickListener(endDatePickerLayoutCLickListener());
 
         progressDialog = new ProgressDialog(BookCarActivity.this);
         progressDialog.setCancelable(true);
@@ -101,6 +124,50 @@ public class BookCarActivity extends AppCompatActivity {
                 }
         );
 
+    }
+
+    private View.OnClickListener endDatePickerLayoutCLickListener() {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                today = MaterialDatePicker.todayInUtcMilliseconds();
+                final MaterialDatePicker.Builder singleDatePicker = MaterialDatePicker.Builder.datePicker();
+                singleDatePicker.setTitleText("Select start date");
+                singleDatePicker.setSelection(today);
+                final MaterialDatePicker materialDatePicker = singleDatePicker.build();
+                materialDatePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener() {
+                    @Override
+                    public void onPositiveButtonClick(Object selection) {
+                        endDateString = materialDatePicker.getHeaderText();
+                        endDatePickerLayout.setText(endDateString);
+                    }
+                });
+                materialDatePicker.show(getSupportFragmentManager(), "DATE");
+            }
+        };
+    }
+
+    private View.OnClickListener startDatePickerLayoutCLickListener() {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                today = MaterialDatePicker.todayInUtcMilliseconds();
+                final MaterialDatePicker.Builder singleDatePicker = MaterialDatePicker.Builder.datePicker();
+                singleDatePicker.setTitleText("Select start date");
+                singleDatePicker.setSelection(today);
+                final MaterialDatePicker materialDatePicker = singleDatePicker.build();
+                materialDatePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener() {
+                    @Override
+                    public void onPositiveButtonClick(Object selection) {
+                        startDateString = materialDatePicker.getHeaderText();
+                        startDatePickerLayout.setText(startDateString);
+                    }
+                });
+                materialDatePicker.show(getSupportFragmentManager(), "DATE");
+            }
+        };
     }
 
     private void setDetailsOnCarModel() {
@@ -153,16 +220,32 @@ public class BookCarActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                if (utils.getStoredBoolean(BookCarActivity.this, "alreadyBooked")){
+                if (utils.getStoredBoolean(BookCarActivity.this, "alreadyBooked")) {
                     Toast.makeText(BookCarActivity.this, "You can only apply for one booking at a time!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (TextUtils.isEmpty(startDateString) || startDateString == null) {
+                    Toast.makeText(BookCarActivity.this, "Please select start trip date!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (TextUtils.isEmpty(endDateString) || endDateString == null) {
+                    Toast.makeText(BookCarActivity.this, "Please select end trip date!", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
                 utils.showDialog(BookCarActivity.this,
                         "Are you sure?",
-                        "Do you really want to book this car for "
-                        +currentMileageTv.getText().toString()
-                        +" in " + totalCostTv.getText().toString(),
+                        "You are about to book a car for "
+                                + currentMileageTv.getText().toString()
+                                + " in " + totalCostTv.getText().toString()
+                                + "\n"
+                                + "Your booking date is: " + utils.getDate() + "."
+                                + "\nCar pickup location: " + "Personal location.\n"
+                                + "Car drop-off/return location: " + "Personal location."
+                                + "\nConfirm?"
+                        ,
                         "Yes",
                         "No",
                         new DialogInterface.OnClickListener() {
@@ -372,6 +455,35 @@ public class BookCarActivity extends AppCompatActivity {
 
                 if (task.isSuccessful()) {
 
+                    uploadOtherDateDetails(dialogInterface);
+
+                } else {
+                    progressDialog.dismiss();
+                    Toast.makeText(BookCarActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
+    }
+
+    private void uploadOtherDateDetails(DialogInterface dialogInterface) {
+
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+
+        HashMap<String, String> hashMap = new HashMap<>();
+        hashMap.put("start_date", startDateString);
+        hashMap.put("end_date", endDateString);
+        hashMap.put("booking_date", utils.getDate());
+
+        databaseReference.child("requests")
+                .child(auth.getCurrentUser().getUid())
+                .setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+
+                if (task.isSuccessful()) {
+
                     progressDialog.dismiss();
                     dialogInterface.dismiss();
 
@@ -387,8 +499,11 @@ public class BookCarActivity extends AppCompatActivity {
                     startActivity(intent);
 
                 } else {
+
                     progressDialog.dismiss();
                     Toast.makeText(BookCarActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+
+
                 }
 
             }

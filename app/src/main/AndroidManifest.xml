@@ -3,7 +3,7 @@
     package="com.moutamid.carrentalproject">
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -13,17 +13,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CarRentalProject">
-        <activity android:name=".BookCarActivity">
-
-        </activity>
+        <activity android:name=".SettingsActivity"></activity>
+        <activity android:name=".BookCarActivity"></activity>
         <activity android:name=".ForgotPasswordActivity" />
         <activity android:name=".TermsConditionsActivity" />
         <activity android:name=".OnBoardingActivity" />
         <activity android:name=".ActivitySignUp" />
         <activity android:name=".ActivityLogin" />
-        <activity android:name=".BottomNavigationActivity">
-
-        </activity>
+        <activity android:name=".BottomNavigationActivity"></activity>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

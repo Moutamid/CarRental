@@ -646,7 +646,9 @@ public class TrackerFragment extends Fragment {
     }
 
     private void stopLocationUpdates() {
-        fusedLocationProviderClient.removeLocationUpdates(locationCallback);
+        if (fusedLocationProviderClient != null
+                && locationCallback != null)
+            fusedLocationProviderClient.removeLocationUpdates(locationCallback);
     }
 
     private void getLastLocation() {
