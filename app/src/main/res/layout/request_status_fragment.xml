@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -28,11 +29,11 @@
     </LinearLayout>
 
     <RelativeLayout
-        android:layout_width="match_parent"
         android:id="@+id/request_status_parent_layout"
-        android:visibility="gone"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/top_layput_request_status">
+        android:layout_below="@id/top_layput_request_status"
+        android:visibility="gone">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -187,7 +188,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
-                                android:text="$190 /Mileage"
+                                android:text="RM190 /Mileage"
                                 android:textColor="@color/black"
                                 android:textSize="17sp"
                                 android:textStyle="bold"
@@ -337,7 +338,7 @@
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
                     android:gravity="end"
-                    android:text="$500"
+                    android:text="RM500"
                     android:textColor="@color/goldenrodd"
                     android:textSize="18sp"
                     android:textStyle="bold" />
@@ -388,9 +389,20 @@
     </RelativeLayout>
 
     <ProgressBar
+        android:id="@+id/progress_bar_status_fragment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/progress_bar_status_fragment"
-        android:layout_centerInParent="true"/>
+        android:layout_centerInParent="true" />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/error_layout_fragment_status"
+        android:layout_width="match_parent"
+        android:layout_height="350dp"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        app:lottie_autoPlay="true"
+        app:lottie_fileName="empty_emoji.json"
+        app:lottie_loop="true"
+        app:lottie_speed="1.25" />
 
 </RelativeLayout>

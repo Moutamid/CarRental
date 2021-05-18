@@ -159,7 +159,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
-                            android:text="$190 /Mileage"
+                            android:text="RM190 /Mileage"
                             android:textColor="@color/black"
                             android:textSize="17sp"
                             android:textStyle="bold"
@@ -303,7 +303,7 @@
                     android:textColor="@color/black"
                     android:textSize="25sp"
                     android:textStyle="bold" />
-<!--TODO: 5 mil-->
+                <!--TODO: 5 mil-->
                 <ImageView
                     android:id="@+id/plus_btn_activity_bok_car"
                     android:layout_width="80dp"
@@ -338,7 +338,7 @@
                         android:id="@+id/per_mileage_rate_activity_book_car"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="~ $10"
+                        android:text="~ RM10"
                         android:textColor="@color/goldenrodd"
                         android:textSize="20sp"
                         android:textStyle="bold" />
@@ -365,7 +365,7 @@
                         android:id="@+id/total_cost_activity_bok_car"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="$50"
+                        android:text="RM50"
                         android:textColor="@color/goldenrodd"
                         android:textSize="20sp"
                         android:textStyle="bold" />

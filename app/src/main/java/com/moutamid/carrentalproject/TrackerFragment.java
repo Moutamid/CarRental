@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,6 +30,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.daimajia.androidanimations.library.Techniques;
@@ -60,6 +62,10 @@ public class TrackerFragment extends Fragment {
 
     private boolean golden = true;
     private YoYo.YoYoString gpsAnimation;
+
+    private RelativeLayout parentLayout;
+    private ProgressBar progressBar;
+    private LottieAnimationView errorView;
 
     private double currentMileagesDouble = 0;
     private double totalMileagesDouble = 0;
@@ -212,6 +218,10 @@ public class TrackerFragment extends Fragment {
         currentMileagesTextView = view.findViewById(R.id.current_mileages_text_view_tracker);
         totalMileagesTextView = view.findViewById(R.id.total_mileages_tracker);
 
+        parentLayout = view.findViewById(R.id.parent_layout_car_tracker);
+        progressBar = view.findViewById(R.id.progress_bar_car_tracker);
+        errorView = view.findViewById(R.id.error_layout_fragment_tracker);
+
 //        double value = 0;
 //
 //        databaseReference.child("requests")
@@ -225,9 +235,6 @@ public class TrackerFragment extends Fragment {
                         bookingRequestObjectListener()
                 );
 
-        setStartDriveBtnCLickListener();
-
-
         return view;
     }
 
@@ -237,7 +244,9 @@ public class TrackerFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
                 if (!snapshot.exists() && getActivity() == null) {
-//                    progressBar.setVisibility(View.GONE);
+                    progressBar.setVisibility(View.GONE);
+                    errorView.playAnimation();
+                    errorView.setVisibility(View.VISIBLE);
                     Toast.makeText(getActivity(), "No snapshot exists!", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -264,11 +273,17 @@ public class TrackerFragment extends Fragment {
 //                }
 
                 if (model.getStatus().equals("pending")) {
+                    progressBar.setVisibility(View.GONE);
+                    errorView.playAnimation();
+                    errorView.setVisibility(View.VISIBLE);
                     Toast.makeText(getActivity(), "Status is still pending!", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
                 if (model.getStatus().equals("rejected")) {
+                    progressBar.setVisibility(View.GONE);
+                    errorView.playAnimation();
+                    errorView.setVisibility(View.VISIBLE);
                     Toast.makeText(getActivity(), "Status is rejected!", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -301,10 +316,11 @@ public class TrackerFragment extends Fragment {
 
                 }
 
-                if (currentMileagesDouble > totalMileagesDouble){
+                if (currentMileagesDouble > totalMileagesDouble) {
                     showLimitReachedDialog();
                 }
 
+                setStartDriveBtnCLickListener();
 //                    requestStatusTv.setText(model.getStatus());
 
 //                databaseReference.child("cars").child(carKey)
@@ -316,7 +332,9 @@ public class TrackerFragment extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-//                progressBar.setVisibility(View.GONE);
+                progressBar.setVisibility(View.GONE);
+                errorView.playAnimation();
+                errorView.setVisibility(View.VISIBLE);
                 Toast.makeText(getActivity(), error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         };
@@ -454,6 +472,9 @@ public class TrackerFragment extends Fragment {
             }
         });
 
+        progressBar.setVisibility(View.GONE);
+        parentLayout.setVisibility(View.VISIBLE);
+
     }
 
     LocationCallback locationCallback = new LocationCallback() {
@@ -541,7 +562,7 @@ public class TrackerFragment extends Fragment {
     private void showLimitReachedDialog() {
 
         showOfflineDialog(getActivity(), "You've reached your mileage!",
-                "You can't drive more than what you've paid for! If you still drive then you'll be charged a fine of $10 on every mileage."
+                "You can't drive more than what you've paid for! If you still drive then you'll be charged a fine of RM10 on every mileage."
         );
 
     }

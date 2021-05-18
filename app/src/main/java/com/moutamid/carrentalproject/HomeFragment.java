@@ -120,7 +120,7 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        price.setText(carsArrayList.get(0).getPerDayRate() + "$ per mileage");
+        price.setText(carsArrayList.get(0).getPerDayRate() + "RM per mileage");
 
         name.setText(carsArrayList.get(0).getName());
 
@@ -153,7 +153,7 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        price.setText(carsArrayList.get(1).getPerDayRate() + "$ per mileage");
+        price.setText(carsArrayList.get(1).getPerDayRate() + "RM per mileage");
 
         name.setText(carsArrayList.get(1).getName());
 
@@ -186,7 +186,7 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        price.setText(carsArrayList.get(2).getPerDayRate() + "$ per mileage");
+        price.setText(carsArrayList.get(2).getPerDayRate() + "RM per mileage");
 
         name.setText(carsArrayList.get(2).getName());
 
@@ -293,7 +293,7 @@ public class HomeFragment extends Fragment {
             if (carModel.isAC())
                 holder.ac.setVisibility(View.VISIBLE);
 
-            holder.price.setText("$" + carModel.getPerDayRate() + " /Mileage");
+            holder.price.setText("RM" + carModel.getPerDayRate() + " /Mileage");
 
             holder.engine.setText(carModel.getEngine());
 

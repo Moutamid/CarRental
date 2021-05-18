@@ -18,6 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.daimajia.androidanimations.library.Techniques;
@@ -44,6 +45,7 @@ public class RequestStatusFragment extends Fragment {
     private Utils utils = new Utils();
     private CarModel carModel;
     private ProgressBar progressBar;
+    private LottieAnimationView errorView;
 
     private View view;
     private DatabaseReference databaseReference;
@@ -74,6 +76,8 @@ public class RequestStatusFragment extends Fragment {
 
         progressBar = view.findViewById(R.id.progress_bar_status_fragment);
         parentLayout = view.findViewById(R.id.request_status_parent_layout);
+        errorView = view.findViewById(R.id.error_layout_fragment_status);
+        errorView.pauseAnimation();
 //        progressDialog.show();
 
         databaseReference = FirebaseDatabase.getInstance().getReference();
@@ -100,9 +104,16 @@ public class RequestStatusFragment extends Fragment {
 
                 if (!snapshot.exists()) {
                     progressBar.setVisibility(View.GONE);
+                    errorView.playAnimation();
+                    errorView.setVisibility(View.VISIBLE);
                     if (getActivity() != null)
                         Toast.makeText(getActivity(), "No request exists!", Toast.LENGTH_SHORT).show();
                     return;
+                }
+
+                if (errorView.getVisibility() == View.VISIBLE) {
+                    errorView.setVisibility(View.GONE);
+                    errorView.pauseAnimation();
                 }
 
                 RequestBookingModel model = snapshot.getValue(RequestBookingModel.class);
@@ -110,7 +121,7 @@ public class RequestStatusFragment extends Fragment {
                 carKey = model.getCarKey();
 
                 totalMileagesTv.setText(model.getTotalMileages() + " Mileages");
-                totalCostTv.setText("$" + model.getTotalCost());
+                totalCostTv.setText("RM" + model.getTotalCost());
 
                 if (getActivity() != null) {
                     if (model.getStatus().equals("pending"))
@@ -137,6 +148,8 @@ public class RequestStatusFragment extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
+                errorView.playAnimation();
+                errorView.setVisibility(View.VISIBLE);
                 progressBar.setVisibility(View.GONE);
                 Toast.makeText(getActivity(), error.getMessage(), Toast.LENGTH_SHORT).show();
             }
@@ -270,7 +283,7 @@ public class RequestStatusFragment extends Fragment {
         if (carModel.isAC())
             ac.setVisibility(View.VISIBLE);
 
-        price.setText("$" + carModel.getPerDayRate() + " /Mileage");
+        price.setText("RM" + carModel.getPerDayRate() + " /Mileage");
 
         engine.setText(carModel.getEngine());
 

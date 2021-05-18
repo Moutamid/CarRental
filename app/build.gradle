@@ -77,4 +77,7 @@ dependencies {
     // LOTTIE ANIMATIONS
     implementation 'com.airbnb.android:lottie:3.7.0'
 
+    // Dexter Permission Library
+    implementation 'com.karumi:dexter:5.0.0'
+
 }
