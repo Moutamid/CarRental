@@ -20,8 +20,8 @@
         android:visibility="invisible" />
 
     <ImageView
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
         android:layout_gravity="center"
         android:src="@drawable/ic_baseline_edit_golden_24" />
 
@@ -32,11 +32,10 @@
         android:layout_gravity="center"
         android:layout_marginStart="12dp"
         android:layout_marginLeft="12dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="12dp"
         android:layout_marginRight="12dp"
         android:gravity="center"
-        android:maxLines="1"
         android:text="Please enter a new name!"
         android:textColor="@color/darkBlue"
         android:textSize="18sp"
@@ -58,6 +57,7 @@
         android:inputType="textPersonName"
         android:padding="10dp"
         android:textColor="@color/black"
+        android:textColorHint="@color/lightBlack"
         android:textSize="15sp" />
 
     <androidx.appcompat.widget.AppCompatButton
@@ -65,10 +65,10 @@
         android:layout_width="160dp"
         android:layout_height="45dp"
         android:layout_gravity="center"
-        android:layout_marginStart="30dp"
+        android:layout_marginStart="80dp"
         android:layout_marginTop="20dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginBottom="15dp"
+        android:layout_marginEnd="80dp"
+        android:layout_marginBottom="25dp"
         android:background="@drawable/bg_get_started_btn"
         android:gravity="center"
         android:text="Upload"

@@ -51,10 +51,12 @@ public class SettingsActivity extends AppCompatActivity {
                 "nameStr"
         ));
 
-        emailTextView.setText(utils.getStoredString(
-                SettingsActivity.this,
-                "emailStr"
-        ));
+//        emailTextView.setText(utils.getStoredString(
+//                SettingsActivity.this,
+//                "emailStr"
+//        ));
+
+        emailTextView.setText(auth.getCurrentUser().getEmail());
 
         licenseTextView.setText(utils.getStoredString(
                 SettingsActivity.this,
@@ -67,9 +69,10 @@ public class SettingsActivity extends AppCompatActivity {
                 utils.removeSharedPref(SettingsActivity.this);
                 auth.signOut();
                 Intent intent = new Intent(SettingsActivity.this, MainActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 finish();
                 startActivity(intent);
+
             }
         });
 
@@ -179,6 +182,8 @@ public class SettingsActivity extends AppCompatActivity {
             return;
         }
 
+        final String realEmailAddress = auth.getCurrentUser().getEmail();
+
         progressDialog.show();
 
         databaseReference.child("users").child(auth.getCurrentUser().getUid())
@@ -203,7 +208,8 @@ public class SettingsActivity extends AppCompatActivity {
                                         dialog.dismiss();
 
                                     } else {
-
+                                        databaseReference.child("users").child(auth.getCurrentUser().getUid())
+                                                .child("email").setValue(realEmailAddress);
                                         progressDialog.dismiss();
                                         Toast.makeText(SettingsActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                                     }
