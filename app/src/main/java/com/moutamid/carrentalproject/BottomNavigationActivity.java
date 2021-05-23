@@ -46,6 +46,10 @@ public class BottomNavigationActivity extends AppCompatActivity {
     private ViewPager viewPager;
     private SmoothBottomBar smoothBottomBar;
 
+//    public void RefreshActivity(){
+//        recreate();
+//    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

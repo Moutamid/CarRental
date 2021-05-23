@@ -243,11 +243,11 @@ public class TrackerFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                if (!snapshot.exists() && getActivity() == null) {
+                if (!snapshot.exists() && getActivity() != null) {
                     progressBar.setVisibility(View.GONE);
                     errorView.playAnimation();
                     errorView.setVisibility(View.VISIBLE);
-                    Toast.makeText(getActivity(), "No snapshot exists!", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getActivity(), "No snapshot exists!", Toast.LENGTH_SHORT).show();
                     return;
                 }
 

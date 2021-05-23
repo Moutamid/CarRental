@@ -106,8 +106,8 @@ public class RequestStatusFragment extends Fragment {
                     progressBar.setVisibility(View.GONE);
                     errorView.playAnimation();
                     errorView.setVisibility(View.VISIBLE);
-                    if (getActivity() != null)
-                        Toast.makeText(getActivity(), "No request exists!", Toast.LENGTH_SHORT).show();
+//                    if (getActivity() != null)
+//                        Toast.makeText(getActivity(), "No request exists!", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -163,7 +163,7 @@ public class RequestStatusFragment extends Fragment {
 
                 if (!snapshot.exists()) {
                     progressBar.setVisibility(View.GONE);
-                    Toast.makeText(getActivity(), "No car exist!", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getActivity(), "No car exist!", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -358,6 +358,8 @@ public class RequestStatusFragment extends Fragment {
                                                     Toast.makeText(getActivity(), "Done", Toast.LENGTH_SHORT).show();
 
                                                     utils.storeBoolean(getActivity(), "alreadyBooked", false);
+
+                                                    getActivity().recreate();
 
                                                 } else {
                                                     progressDialog.dismiss();

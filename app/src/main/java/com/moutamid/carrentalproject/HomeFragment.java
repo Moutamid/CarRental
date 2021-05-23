@@ -41,12 +41,6 @@ public class HomeFragment extends Fragment {
     private RecyclerView conversationRecyclerView;
     private RecyclerViewAdapterMessages adapter;
 
-//    public LinearLayout spaceLayout() {
-//
-//        return view.findViewById(R.id.textonboardingspace);
-//
-//    }
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

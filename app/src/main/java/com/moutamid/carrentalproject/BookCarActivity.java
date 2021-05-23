@@ -30,7 +30,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.TimeZone;
 
 public class BookCarActivity extends AppCompatActivity {
@@ -98,7 +97,6 @@ public class BookCarActivity extends AppCompatActivity {
 
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
 
-//        String key = "-M_VDfYhPGwzV3ebjyWY";
         String key = getIntent().getStringExtra("key");
 
         databaseReference.child("cars").child(key).addListenerForSingleValueEvent(
@@ -133,7 +131,7 @@ public class BookCarActivity extends AppCompatActivity {
 
                 today = MaterialDatePicker.todayInUtcMilliseconds();
                 final MaterialDatePicker.Builder singleDatePicker = MaterialDatePicker.Builder.datePicker();
-                singleDatePicker.setTitleText("Select start date");
+                singleDatePicker.setTitleText("Select end date");
                 singleDatePicker.setSelection(today);
                 final MaterialDatePicker materialDatePicker = singleDatePicker.build();
                 materialDatePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener() {
@@ -240,11 +238,11 @@ public class BookCarActivity extends AppCompatActivity {
                         "You are about to book a car for "
                                 + currentMileageTv.getText().toString()
                                 + " in " + totalCostTv.getText().toString()
-                                + "\n"
+                                + "\n\n"
                                 + "Your booking date is: " + utils.getDate() + "."
                                 + "\nCar pickup location: " + "Personal location.\n"
-                                + "Car drop-off/return location: " + "Personal location."
-                                + "\nConfirm?"
+                                + "\nCar drop-off/return location: " + "Personal location."
+                                + "\n\nConfirm?"
                         ,
                         "Yes",
                         "No",
@@ -447,6 +445,9 @@ public class BookCarActivity extends AppCompatActivity {
         model.setCarImageUrl(carModel.getImageUrl());
         model.setCarName(carModel.getName());
         model.setCarKey(carModel.getCarKey());
+        model.setStart_date(startDateString);
+        model.setEnd_date(endDateString);
+        model.setBooking_date(utils.getDate());
 
         databaseReference.child("requests").child(auth.getCurrentUser().getUid())
                 .setValue(model).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -455,7 +456,7 @@ public class BookCarActivity extends AppCompatActivity {
 
                 if (task.isSuccessful()) {
 
-                    uploadOtherDateDetails(dialogInterface);
+                    storeOfflineDetailsAndFinish(dialogInterface);
 
                 } else {
                     progressDialog.dismiss();
@@ -466,57 +467,61 @@ public class BookCarActivity extends AppCompatActivity {
         });
     }
 
-    private void uploadOtherDateDetails(DialogInterface dialogInterface) {
+    private void storeOfflineDetailsAndFinish(DialogInterface dialogInterface) {
+//
+//        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+//        FirebaseAuth auth = FirebaseAuth.getInstance();
+//
+//        HashMap<String, String> hashMap = new HashMap<>();
+//        hashMap.put("start_date", startDateString);
+//        hashMap.put("end_date", endDateString);
+//        hashMap.put("booking_date", utils.getDate());
+//
+//        databaseReference.child("requests")
+//                .child(auth.getCurrentUser().getUid())
+//                .setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+//            @Override
+//            public void onComplete(@NonNull Task<Void> task) {
+//
+//                if (task.isSuccessful()) {
 
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
-        FirebaseAuth auth = FirebaseAuth.getInstance();
+        progressDialog.dismiss();
+        dialogInterface.dismiss();
 
-        HashMap<String, String> hashMap = new HashMap<>();
-        hashMap.put("start_date", startDateString);
-        hashMap.put("end_date", endDateString);
-        hashMap.put("booking_date", utils.getDate());
+        Toast.makeText(BookCarActivity.this,
+                "Your request has been submitted successfully!"
+                , Toast.LENGTH_SHORT).show();
 
-        databaseReference.child("requests")
-                .child(auth.getCurrentUser().getUid())
-                .setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
+        utils.storeBoolean(BookCarActivity.this, "alreadyBooked", true);
 
-                if (task.isSuccessful()) {
+        Intent intent = new Intent(BookCarActivity.this, BottomNavigationActivity.class);
+        intent.putExtra("fromBookingActivity", true);
+        finish();
+        startActivity(intent);
 
-                    progressDialog.dismiss();
-                    dialogInterface.dismiss();
-
-                    Toast.makeText(BookCarActivity.this,
-                            "Your request has been submitted successfully!"
-                            , Toast.LENGTH_SHORT).show();
-
-                    utils.storeBoolean(BookCarActivity.this, "alreadyBooked", true);
-
-                    Intent intent = new Intent(BookCarActivity.this, BottomNavigationActivity.class);
-                    intent.putExtra("fromBookingActivity", true);
-                    finish();
-                    startActivity(intent);
-
-                } else {
-
-                    progressDialog.dismiss();
-                    Toast.makeText(BookCarActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-
-
-                }
-
-            }
-        });
+//                } else {
+//
+//                    progressDialog.dismiss();
+//                    Toast.makeText(BookCarActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+//
+//
+//                }
+//
+//            }
+//        });
     }
 
     private static class RequestBookingModel {
 
+        private String start_date, end_date, booking_date;
         private String carKey, carName, carImageUrl, myName, myUid,
                 licenseNumber, status;
         private int totalMileages, totalCost;
 
-        public RequestBookingModel(String carKey, String carName, String carImageUrl, String myName, String myUid, String licenseNumber, String status, int totalMileages, int totalCost) {
+        public RequestBookingModel(String start_date, String end_date, String booking_date, String carKey, String carName, String carImageUrl, String myName, String myUid, String licenseNumber, String status, int totalMileages, int totalCost) {
+            this.start_date = start_date;
+            this.end_date = end_date;
+            this.booking_date = booking_date;
             this.carKey = carKey;
             this.carName = carName;
             this.carImageUrl = carImageUrl;
@@ -526,6 +531,30 @@ public class BookCarActivity extends AppCompatActivity {
             this.status = status;
             this.totalMileages = totalMileages;
             this.totalCost = totalCost;
+        }
+
+        public String getStart_date() {
+            return start_date;
+        }
+
+        public void setStart_date(String start_date) {
+            this.start_date = start_date;
+        }
+
+        public String getEnd_date() {
+            return end_date;
+        }
+
+        public void setEnd_date(String end_date) {
+            this.end_date = end_date;
+        }
+
+        public String getBooking_date() {
+            return booking_date;
+        }
+
+        public void setBooking_date(String booking_date) {
+            this.booking_date = booking_date;
         }
 
         public String getCarName() {
