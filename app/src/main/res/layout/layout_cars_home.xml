@@ -117,6 +117,7 @@
                 android:layout_marginStart="5dp"
                 android:layout_marginLeft="5dp"
                 android:layout_marginEnd="5dp"
+                android:visibility="invisible"
                 android:text="-"
                 android:textSize="15sp"
                 android:textStyle="bold" />
@@ -126,6 +127,7 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:maxLines="1"
+                android:visibility="invisible"
                 android:text="Petrol"
                 android:id="@+id/engine_layout_car_home"
                 android:textColor="@color/greyTextColor"

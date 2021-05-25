@@ -131,6 +131,7 @@
                             android:layout_marginStart="5dp"
                             android:layout_marginLeft="5dp"
                             android:layout_marginEnd="5dp"
+                            android:visibility="invisible"
                             android:text="-"
                             android:textSize="15sp"
                             android:textStyle="bold" />
@@ -138,6 +139,7 @@
                         <TextView
                             android:id="@+id/engine_layout_car_activity_bok_car"
                             android:layout_width="wrap_content"
+                            android:visibility="invisible"
                             android:layout_height="wrap_content"
                             android:ellipsize="end"
                             android:maxLines="1"
