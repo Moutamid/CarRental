@@ -433,47 +433,99 @@ public class TrackerFragment extends Fragment {
         RequestBookingModel() {
         }
     }
+private boolean firstTime = true;
 
     private void setStartDriveBtnCLickListener() {
         final RelativeLayout startDriveLayout = (RelativeLayout) view.findViewById(R.id.bottom_layout_tracker);
         final TextView startDriveTextView = (TextView) view.findViewById(R.id.start_driving_textview);
         final ImageView gpsImageView = view.findViewById(R.id.tracker_image_gps);
 
+        databaseReference.child("requests")
+                .child(mAuth.getCurrentUser().getUid())
+                .child("tracker_started")
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (!snapshot.exists()){
+                            return;
+                        }
+
+                        boolean value = snapshot.getValue(Boolean.class);
+
+                        if (value && firstTime) {
+                            // TRACKER_STARTED
+
+                            startDriveLayout.setBackgroundResource(R.drawable.bg_stop_tracker_btn);
+                            startDriveTextView.setText("Tracking is started");
+
+                            gpsAnimation = YoYo.with(Techniques.Flash).duration(4000).delay(1000).repeat(10000)
+                                    .playOn(gpsImageView);
+
+                            getLastLocation();
+                            firstTime = false;
+//                    startLocationChecker();
+
+//                            golden = false;
+                        } else {
+                            // TRACKER_STOPPED
+
+                            if (firstTime)
+                                return;
+
+                            startDriveLayout.setBackgroundResource(R.drawable.bg_get_started_btn);
+                            startDriveTextView.setText("Tracking is stopped");
+
+                            gpsAnimation.stop();
+//                    gpsImageView.clearAnimation();
+
+                            stopLocationUpdates();
+
+//                            golden = true;
+
+                        }
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        progressBar.setVisibility(View.GONE);
+                        parentLayout.setVisibility(View.VISIBLE);
+                        Toast.makeText(getActivity(), error.toException().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+
         startDriveLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                if (golden) {
-
-                    startDriveLayout.setBackgroundResource(R.drawable.bg_stop_tracker_btn);
-                    startDriveTextView.setText("Stop");
-
-                    gpsAnimation = YoYo.with(Techniques.Flash).duration(4000).delay(1000).repeat(10000)
-                            .playOn(gpsImageView);
-
-                    getLastLocation();
-//                    startLocationChecker();
-
-                    golden = false;
-                } else {
-
-                    startDriveLayout.setBackgroundResource(R.drawable.bg_get_started_btn);
-                    startDriveTextView.setText("Start driving");
-
-                    gpsAnimation.stop();
-//                    gpsImageView.clearAnimation();
-
-                    stopLocationUpdates();
-
-                    golden = true;
-
-                }
+                //if (golden) {
+                //
+                //                    startDriveLayout.setBackgroundResource(R.drawable.bg_stop_tracker_btn);
+                //                    startDriveTextView.setText("Stop");
+                //
+                //                    gpsAnimation = YoYo.with(Techniques.Flash).duration(4000).delay(1000).repeat(10000)
+                //                            .playOn(gpsImageView);
+                //
+                //                    getLastLocation();
+                ////                    startLocationChecker();
+                //
+                //                    golden = false;
+                //                } else {
+                //
+                //                    startDriveLayout.setBackgroundResource(R.drawable.bg_get_started_btn);
+                //                    startDriveTextView.setText("Start driving");
+                //
+                //                    gpsAnimation.stop();
+                ////                    gpsImageView.clearAnimation();
+                //
+                //                    stopLocationUpdates();
+                //
+                //                    golden = true;
+                //
+                //                }
 
             }
         });
-
-        progressBar.setVisibility(View.GONE);
-        parentLayout.setVisibility(View.VISIBLE);
 
     }
 
