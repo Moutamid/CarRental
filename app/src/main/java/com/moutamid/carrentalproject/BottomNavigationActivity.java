@@ -161,10 +161,11 @@ public class BottomNavigationActivity extends AppCompatActivity {
         adapter.addFragment(new HomeFragment());
 //        adapter.addFragment(new BookingHistoryFragment());
         adapter.addFragment(new RequestStatusFragment());
+        adapter.addFragment(new BookingHistoryFragment());
 //        adapter.addFragment(new TrackerFragment());
 
         // Setting Adapter To ViewPager
-        viewPager.setOffscreenPageLimit(2);//TODO:3
+        viewPager.setOffscreenPageLimit(3);
         viewPager.setAdapter(adapter);
 
         Log.d(TAG, "setupViewPager: adapter attached");
@@ -181,7 +182,7 @@ public class BottomNavigationActivity extends AppCompatActivity {
                 switch (position) {
                     case 0:
                     case 1:
-//                    case 2:
+                    case 2:
                         smoothBottomBar.setItemActiveIndex(position);
                         break;
                     default:

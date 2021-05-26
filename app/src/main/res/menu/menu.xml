@@ -25,7 +25,7 @@
 
     <item
         android:id="@+id/item_tracker"
-        android:icon="@drawable/ic_outline_my_location_24"
-        android:title="Tracker" />
+        android:icon="@drawable/ic_baseline_history_24"
+        android:title="Booking history" />
 
 </menu>

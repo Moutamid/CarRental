@@ -434,6 +434,7 @@ public class BookCarActivity extends AppCompatActivity {
         String name = utils.getStoredString(BookCarActivity.this, "nameStr");
 //        String email = utils.getStoredString(BookCarActivity.this, "emailStr");
         String license = utils.getStoredString(BookCarActivity.this, "licenseStr");
+        String pushKey = databaseReference.child("booking_history").push().getKey();
 
         RequestBookingModel model = new RequestBookingModel();
         model.setTotalCost(totalCost);
@@ -448,23 +449,39 @@ public class BookCarActivity extends AppCompatActivity {
         model.setStart_date(startDateString);
         model.setEnd_date(endDateString);
         model.setBooking_date(utils.getDate());
+        model.setPushKey(pushKey);
 
-        databaseReference.child("requests").child(auth.getCurrentUser().getUid())
+        databaseReference.child("booking_history")
+                .child(pushKey)
                 .setValue(model).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-
                 if (task.isSuccessful()) {
 
-                    storeOfflineDetailsAndFinish(dialogInterface);
+                    databaseReference.child("requests").child(auth.getCurrentUser().getUid())
+                            .setValue(model).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+
+                            if (task.isSuccessful()) {
+
+                                storeOfflineDetailsAndFinish(dialogInterface);
+
+                            } else {
+                                progressDialog.dismiss();
+                                Toast.makeText(BookCarActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+
+                        }
+                    });
 
                 } else {
                     progressDialog.dismiss();
                     Toast.makeText(BookCarActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                 }
-
             }
         });
+
     }
 
     private void storeOfflineDetailsAndFinish(DialogInterface dialogInterface) {
@@ -513,15 +530,16 @@ public class BookCarActivity extends AppCompatActivity {
 
     private static class RequestBookingModel {
 
-        private String start_date, end_date, booking_date;
+        private String start_date, end_date, booking_date, pushKey;
         private String carKey, carName, carImageUrl, myName, myUid,
                 licenseNumber, status;
         private int totalMileages, totalCost;
 
-        public RequestBookingModel(String start_date, String end_date, String booking_date, String carKey, String carName, String carImageUrl, String myName, String myUid, String licenseNumber, String status, int totalMileages, int totalCost) {
+        public RequestBookingModel(String start_date, String end_date, String booking_date, String pushKey, String carKey, String carName, String carImageUrl, String myName, String myUid, String licenseNumber, String status, int totalMileages, int totalCost) {
             this.start_date = start_date;
             this.end_date = end_date;
             this.booking_date = booking_date;
+            this.pushKey = pushKey;
             this.carKey = carKey;
             this.carName = carName;
             this.carImageUrl = carImageUrl;
@@ -531,6 +549,14 @@ public class BookCarActivity extends AppCompatActivity {
             this.status = status;
             this.totalMileages = totalMileages;
             this.totalCost = totalCost;
+        }
+
+        public String getPushKey() {
+            return pushKey;
+        }
+
+        public void setPushKey(String pushKey) {
+            this.pushKey = pushKey;
         }
 
         public String getStart_date() {

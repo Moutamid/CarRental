@@ -5,6 +5,7 @@
 
 
     <LinearLayout
+        android:id="@+id/top_layout_history"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -12,30 +13,42 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Booking History"
-            android:gravity="center"
-            android:textStyle="bold"
             android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:text="Booking History"
+            android:textColor="@color/black"
             android:textSize="25sp"
-            android:textColor="@color/black"/>
+            android:textStyle="bold" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:layout_marginTop="10dp"
-            android:background="@color/grey"/>
+            android:background="@color/grey" />
 
     </LinearLayout>
 
-    <TextView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="20dp"
-        android:gravity="center"
-        android:text="Booking history"
-        android:textColor="@color/black"
-        android:textSize="20sp"
-        android:textStyle="bold" />
+        android:layout_below="@id/top_layout_history">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/history_recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="200dp" />
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
 
 </RelativeLayout>
