@@ -89,70 +89,70 @@ public class BottomNavigationActivity extends AppCompatActivity {
 
         }
 
-        // CODE HERE
-        Dexter.withActivity(BottomNavigationActivity.this)
-                .withPermission(Manifest.permission.ACCESS_FINE_LOCATION)
-                .withListener(new PermissionListener() {
-                    @Override
-                    public void onPermissionGranted(PermissionGrantedResponse response) {
-//                        Toast.makeText(BottomNavigationActivity.this, "Permission granted successfully!", Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onPermissionDenied(PermissionDeniedResponse response) {
-                        if (response.isPermanentlyDenied()) {
-                            // open device settings when the permission is
-                            // denied permanently
-                            Toast.makeText(BottomNavigationActivity.this, "You need to provide permission!", Toast.LENGTH_SHORT).show();
-
-                            Intent intent = new Intent();
-                            intent.setAction(
-                                    Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                            Uri uri = Uri.fromParts("package",
-                                    BuildConfig.APPLICATION_ID, null);
-                            intent.setData(uri);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            startActivity(intent);
-                        }
-                    }
-
-                    @Override
-                    public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {
-                        token.continuePermissionRequest();
-                    }
-                }).check();
-
-        Dexter.withActivity(BottomNavigationActivity.this)
-                .withPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
-                .withListener(new PermissionListener() {
-                    @Override
-                    public void onPermissionGranted(PermissionGrantedResponse response) {
-//                        Toast.makeText(BottomNavigationActivity.this, "Permission granted successfully!", Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onPermissionDenied(PermissionDeniedResponse response) {
-                        if (response.isPermanentlyDenied()) {
-                            // open device settings when the permission is
-                            // denied permanently
-                            Toast.makeText(BottomNavigationActivity.this, "You need to provide permission!", Toast.LENGTH_SHORT).show();
-
-                            Intent intent = new Intent();
-                            intent.setAction(
-                                    Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                            Uri uri = Uri.fromParts("package",
-                                    BuildConfig.APPLICATION_ID, null);
-                            intent.setData(uri);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            startActivity(intent);
-                        }
-                    }
-
-                    @Override
-                    public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {
-                        token.continuePermissionRequest();
-                    }
-                }).check();
+//        // CODE HERE
+//        Dexter.withActivity(BottomNavigationActivity.this)
+//                .withPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+//                .withListener(new PermissionListener() {
+//                    @Override
+//                    public void onPermissionGranted(PermissionGrantedResponse response) {
+////                        Toast.makeText(BottomNavigationActivity.this, "Permission granted successfully!", Toast.LENGTH_SHORT).show();
+//                    }
+//
+//                    @Override
+//                    public void onPermissionDenied(PermissionDeniedResponse response) {
+//                        if (response.isPermanentlyDenied()) {
+//                            // open device settings when the permission is
+//                            // denied permanently
+//                            Toast.makeText(BottomNavigationActivity.this, "You need to provide permission!", Toast.LENGTH_SHORT).show();
+//
+//                            Intent intent = new Intent();
+//                            intent.setAction(
+//                                    Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+//                            Uri uri = Uri.fromParts("package",
+//                                    BuildConfig.APPLICATION_ID, null);
+//                            intent.setData(uri);
+//                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                            startActivity(intent);
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {
+//                        token.continuePermissionRequest();
+//                    }
+//                }).check();
+//
+//        Dexter.withActivity(BottomNavigationActivity.this)
+//                .withPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
+//                .withListener(new PermissionListener() {
+//                    @Override
+//                    public void onPermissionGranted(PermissionGrantedResponse response) {
+////                        Toast.makeText(BottomNavigationActivity.this, "Permission granted successfully!", Toast.LENGTH_SHORT).show();
+//                    }
+//
+//                    @Override
+//                    public void onPermissionDenied(PermissionDeniedResponse response) {
+//                        if (response.isPermanentlyDenied()) {
+//                            // open device settings when the permission is
+//                            // denied permanently
+//                            Toast.makeText(BottomNavigationActivity.this, "You need to provide permission!", Toast.LENGTH_SHORT).show();
+//
+//                            Intent intent = new Intent();
+//                            intent.setAction(
+//                                    Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+//                            Uri uri = Uri.fromParts("package",
+//                                    BuildConfig.APPLICATION_ID, null);
+//                            intent.setData(uri);
+//                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                            startActivity(intent);
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {
+//                        token.continuePermissionRequest();
+//                    }
+//                }).check();
     }
 
     private void setupViewPager(ViewPager viewPager) {
@@ -161,10 +161,10 @@ public class BottomNavigationActivity extends AppCompatActivity {
         adapter.addFragment(new HomeFragment());
 //        adapter.addFragment(new BookingHistoryFragment());
         adapter.addFragment(new RequestStatusFragment());
-        adapter.addFragment(new TrackerFragment());
+//        adapter.addFragment(new TrackerFragment());
 
         // Setting Adapter To ViewPager
-        viewPager.setOffscreenPageLimit(3);
+        viewPager.setOffscreenPageLimit(2);//TODO:3
         viewPager.setAdapter(adapter);
 
         Log.d(TAG, "setupViewPager: adapter attached");
@@ -181,7 +181,7 @@ public class BottomNavigationActivity extends AppCompatActivity {
                 switch (position) {
                     case 0:
                     case 1:
-                    case 2:
+//                    case 2:
                         smoothBottomBar.setItemActiveIndex(position);
                         break;
                     default:

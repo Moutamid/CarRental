@@ -433,7 +433,8 @@ public class TrackerFragment extends Fragment {
         RequestBookingModel() {
         }
     }
-private boolean firstTime = true;
+
+    private boolean firstTime = true;
 
     private void setStartDriveBtnCLickListener() {
         final RelativeLayout startDriveLayout = (RelativeLayout) view.findViewById(R.id.bottom_layout_tracker);
@@ -446,7 +447,7 @@ private boolean firstTime = true;
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if (!snapshot.exists()){
+                        if (!snapshot.exists()) {
                             return;
                         }
 
