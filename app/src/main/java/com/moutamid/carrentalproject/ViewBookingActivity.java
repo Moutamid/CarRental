@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.ProgressDialog;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -19,6 +20,7 @@ import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -31,6 +33,7 @@ import static com.bumptech.glide.load.engine.DiskCacheStrategy.DATA;
 public class ViewBookingActivity extends AppCompatActivity {
     private DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
     private ProgressDialog progressDialog;
+    private String key;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +42,7 @@ public class ViewBookingActivity extends AppCompatActivity {
 
         initViews();
 
-        String key = getIntent().getStringExtra("key");
+        key = getIntent().getStringExtra("key");
 
         databaseReference.child("booking_history").child(key)
                 .addValueEventListener(new ValueEventListener() {
@@ -56,16 +59,20 @@ public class ViewBookingActivity extends AppCompatActivity {
                         String startDateString = "25/04/21",
                                 endDateString = "29/04/21",
                                 currentMileagesStr = "not started",
-                        bookingDateStr = "on 21/04/2021";
+                                bookingDateStr = "on 21/04/2021",
+                                pushKeyStr = "error";
 
                         if (snapshot.child("start_date").exists()) {
-                            bookingDateStr = "on "+snapshot.child("booking_date").getValue(String.class);
+                            bookingDateStr = "on " + snapshot.child("booking_date").getValue(String.class);
                         }
                         if (snapshot.child("start_date").exists()) {
                             startDateString = snapshot.child("start_date").getValue(String.class);
                         }
                         if (snapshot.child("end_date").exists()) {
                             endDateString = snapshot.child("end_date").getValue(String.class);
+                        }
+                        if (snapshot.child("pushKey").exists()) {
+                            pushKeyStr = snapshot.child("pushKey").getValue(String.class);
                         }
                         if (snapshot.child("currentMileages").exists()) {
                             currentMileagesStr = String.valueOf(
@@ -74,7 +81,7 @@ public class ViewBookingActivity extends AppCompatActivity {
                             );
                         }
 
-                        setValuesOnViews(requestBookingModel, startDateString, endDateString, currentMileagesStr, bookingDateStr);
+                        setValuesOnViews(requestBookingModel, startDateString, endDateString, currentMileagesStr, bookingDateStr, pushKeyStr);
 
                     }
 
@@ -94,7 +101,7 @@ public class ViewBookingActivity extends AppCompatActivity {
         progressDialog.show();
     }
 
-    private void setValuesOnViews(RequestBookingModel requestBookingModel, String startDateString, String endDateString, String currentMileagesStr, String bookingDateStr) {
+    private void setValuesOnViews(RequestBookingModel requestBookingModel, String startDateString, String endDateString, String currentMileagesStr, String bookingDateStr, String pushKeyStr) {
         TextView name = findViewById(R.id.user_name_layout_request_viewer);
         TextView carname = findViewById(R.id.car_name_layout_request_viewer);
         TextView status = findViewById(R.id.status_layout_car_request_viewer);
@@ -200,7 +207,63 @@ public class ViewBookingActivity extends AppCompatActivity {
 //        findViewById(R.id.rejectBtn_request).setOnClickListener(rejectBtnClickListeer(requestBookingModel.getMyUid()));
 //        startStopLayout.setOnClickListener(startStopLayoutClickListener(requestBookingModel.getMyUid()));
 
-        progressDialog.dismiss();
+        databaseReference
+                .child("cars")
+                .child(requestBookingModel.getCarKey())
+                .child("booking")
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (!snapshot.exists()) {
+                            progressDialog.dismiss();
+                            return;
+                        }
+
+                        if (pushKeyStr.equals(snapshot.child("pushKey").getValue(String.class))) {
+
+                            databaseReference
+                                    .child("cars")
+                                    .child(requestBookingModel.getCarKey())
+                                    .child("booking")
+                                    .child("currentMileages")
+                                    .addValueEventListener(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                            if (!snapshot.exists()) {
+                                                progressDialog.dismiss();
+                                                return;
+                                            }
+
+                                            double currentMileagesStr = snapshot.getValue(Double.class);
+
+                                            FirebaseAuth auth = FirebaseAuth.getInstance();
+
+                                            databaseReference.child("requests")
+                                                    .child(auth.getCurrentUser().getUid())
+                                                    .child("currentMileages")
+                                                    .setValue(currentMileagesStr);
+
+                                            progressDialog.dismiss();
+
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError error) {
+                                            progressDialog.dismiss();
+                                        }
+                                    });
+
+                        } else progressDialog.dismiss();
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        progressDialog.dismiss();
+                    }
+                });
+
+//        progressDialog.dismiss();
 
     }
 

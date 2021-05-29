@@ -429,58 +429,95 @@ public class BookCarActivity extends AppCompatActivity {
 
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
 
-        FirebaseAuth auth = FirebaseAuth.getInstance();
-
-        String name = utils.getStoredString(BookCarActivity.this, "nameStr");
-//        String email = utils.getStoredString(BookCarActivity.this, "emailStr");
-        String license = utils.getStoredString(BookCarActivity.this, "licenseStr");
-        String pushKey = databaseReference.child("booking_history").push().getKey();
-
-        RequestBookingModel model = new RequestBookingModel();
-        model.setTotalCost(totalCost);
-        model.setTotalMileages(currentMileageInt);
-        model.setStatus("pending");
-        model.setLicenseNumber(license);
-        model.setMyUid(auth.getCurrentUser().getUid());
-        model.setMyName(name);
-        model.setCarImageUrl(carModel.getImageUrl());
-        model.setCarName(carModel.getName());
-        model.setCarKey(carModel.getCarKey());
-        model.setStart_date(startDateString);
-        model.setEnd_date(endDateString);
-        model.setBooking_date(utils.getDate());
-        model.setPushKey(pushKey);
-
-        databaseReference.child("booking_history")
-                .child(pushKey)
-                .setValue(model).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()) {
-
-                    databaseReference.child("requests").child(auth.getCurrentUser().getUid())
-                            .setValue(model).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-
-                            if (task.isSuccessful()) {
-
-                                storeOfflineDetailsAndFinish(dialogInterface);
-
-                            } else {
-                                progressDialog.dismiss();
-                                Toast.makeText(BookCarActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                            }
-
+        databaseReference
+                .child("cars")
+                .child(carModel.getCarKey())
+                .child("booking")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (snapshot.exists()){
+                            progressDialog.dismiss();
+                            Toast.makeText(BookCarActivity.this, "This car is already been booked by someone else!", Toast.LENGTH_SHORT).show();
+                            return;
                         }
-                    });
 
-                } else {
-                    progressDialog.dismiss();
-                    Toast.makeText(BookCarActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+                        FirebaseAuth auth = FirebaseAuth.getInstance();
+
+                        String name = utils.getStoredString(BookCarActivity.this, "nameStr");
+//        String email = utils.getStoredString(BookCarActivity.this, "emailStr");
+                        String license = utils.getStoredString(BookCarActivity.this, "licenseStr");
+                        String pushKey = databaseReference.child("booking_history").push().getKey();
+
+                        RequestBookingModel model = new RequestBookingModel();
+                        model.setTotalCost(totalCost);
+                        model.setTotalMileages(currentMileageInt);
+                        model.setStatus("pending");
+                        model.setLicenseNumber(license);
+                        model.setMyUid(auth.getCurrentUser().getUid());
+                        model.setMyName(name);
+                        model.setCarImageUrl(carModel.getImageUrl());
+                        model.setCarName(carModel.getName());
+                        model.setCarKey(carModel.getCarKey());
+                        model.setStart_date(startDateString);
+                        model.setEnd_date(endDateString);
+                        model.setBooking_date(utils.getDate());
+                        model.setPushKey(pushKey);
+
+                        databaseReference.child("cars")
+                                .child(model.getCarKey())
+                                .child("booking")
+                                .setValue(model).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+
+                                    databaseReference.child("booking_history")
+                                            .child(pushKey)
+                                            .setValue(model).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()) {
+
+                                                databaseReference.child("requests").child(auth.getCurrentUser().getUid())
+                                                        .setValue(model).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<Void> task) {
+
+                                                        if (task.isSuccessful()) {
+
+                                                            storeOfflineDetailsAndFinish(dialogInterface);
+
+                                                        } else {
+                                                            progressDialog.dismiss();
+                                                            Toast.makeText(BookCarActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                                        }
+
+                                                    }
+                                                });
+
+                                            } else {
+                                                progressDialog.dismiss();
+                                                Toast.makeText(BookCarActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+                                    });
+
+                                } else {
+                                    progressDialog.dismiss();
+                                    Toast.makeText(BookCarActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        progressDialog.dismiss();
+                        Toast.makeText(BookCarActivity.this, error.toException().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
 
     }
 

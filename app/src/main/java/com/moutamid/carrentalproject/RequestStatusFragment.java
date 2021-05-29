@@ -88,7 +88,7 @@ public class RequestStatusFragment extends Fragment {
 
         databaseReference.child("requests")
                 .child(auth.getCurrentUser().getUid())
-                .addValueEventListener(
+                .addListenerForSingleValueEvent(
                         bookingRequestObjectListener()
                 );
 
@@ -120,29 +120,64 @@ public class RequestStatusFragment extends Fragment {
 
                 carKey = model.getCarKey();
 
-                totalMileagesTv.setText(model.getTotalMileages() + " Mileages");
-                totalCostTv.setText("RM" + model.getTotalCost());
+                databaseReference
+                        .child("cars")
+                        .child(carKey)
+                        .child("booking")
+                        .addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                if (getActivity() != null) {
-                    if (model.getStatus().equals("pending"))
-                        requestStatusTv.setTextColor(getActivity().getResources()
-                                .getColor(R.color.greyTextColor));
+                                if (!snapshot.exists()) {
+                                    progressBar.setVisibility(View.GONE);
+                                    errorView.playAnimation();
+                                    errorView.setVisibility(View.VISIBLE);
+//                    if (getActivity() != null)
+//                        Toast.makeText(getActivity(), "No request exists!", Toast.LENGTH_SHORT).show();
+                                    return;
+                                }
 
-                    if (model.getStatus().equals("accepted"))
-                        requestStatusTv.setTextColor(getActivity().getResources()
-                                .getColor(R.color.green));
+                                if (errorView.getVisibility() == View.VISIBLE) {
+                                    errorView.setVisibility(View.GONE);
+                                    errorView.pauseAnimation();
+                                }
 
-                    if (model.getStatus().equals("rejected"))
-                        requestStatusTv.setTextColor(getActivity().getResources()
-                                .getColor(R.color.red));
-                }
+                                RequestBookingModel model = snapshot.getValue(RequestBookingModel.class);
 
-                requestStatusTv.setText(model.getStatus());
+                                totalMileagesTv.setText(model.getTotalMileages() + " Mileages");
+                                totalCostTv.setText("RM" + model.getTotalCost());
 
-                databaseReference.child("cars").child(carKey)
-                        .addListenerForSingleValueEvent(
-                                carModelListener()
-                        );
+                                if (getActivity() != null) {
+                                    if (model.getStatus().equals("pending"))
+                                        requestStatusTv.setTextColor(getActivity().getResources()
+                                                .getColor(R.color.greyTextColor));
+
+                                    if (model.getStatus().equals("accepted"))
+                                        requestStatusTv.setTextColor(getActivity().getResources()
+                                                .getColor(R.color.green));
+
+                                    if (model.getStatus().equals("rejected"))
+                                        requestStatusTv.setTextColor(getActivity().getResources()
+                                                .getColor(R.color.red));
+                                }
+
+                                requestStatusTv.setText(model.getStatus());
+
+                                databaseReference.child("cars").child(carKey)
+                                        .addListenerForSingleValueEvent(
+                                                carModelListener()
+                                        );
+
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+                                errorView.playAnimation();
+                                errorView.setVisibility(View.VISIBLE);
+                                progressBar.setVisibility(View.GONE);
+                                Toast.makeText(getActivity(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
 
             }
 
@@ -341,32 +376,47 @@ public class RequestStatusFragment extends Fragment {
                                 progressDialog.setMessage("Loading...");
                                 progressDialog.show();
 
-                                databaseReference.child("requests")
-                                        .child(auth.getCurrentUser().getUid())
+                                databaseReference
+                                        .child("cars")
+                                        .child(carKey)
+                                        .child("booking")
                                         .removeValue()
                                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                                             @Override
                                             public void onComplete(@NonNull Task<Void> task) {
-
                                                 if (task.isSuccessful()) {
+                                                    databaseReference.child("requests")
+                                                            .child(auth.getCurrentUser().getUid())
+                                                            .removeValue()
+                                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                @Override
+                                                                public void onComplete(@NonNull Task<Void> task) {
 
-                                                    progressDialog.dismiss();
-                                                    parentLayout.setVisibility(
-                                                            View.GONE
-                                                    );
+                                                                    if (task.isSuccessful()) {
 
-                                                    Toast.makeText(getActivity(), "Done", Toast.LENGTH_SHORT).show();
+                                                                        progressDialog.dismiss();
+                                                                        parentLayout.setVisibility(
+                                                                                View.GONE
+                                                                        );
 
-                                                    utils.storeBoolean(getActivity(), "alreadyBooked", false);
+                                                                        Toast.makeText(getActivity(), "Done", Toast.LENGTH_SHORT).show();
 
-                                                    getActivity().recreate();
+                                                                        utils.storeBoolean(getActivity(), "alreadyBooked", false);
 
+                                                                        getActivity().recreate();
+
+                                                                    } else {
+                                                                        progressDialog.dismiss();
+                                                                        Toast.makeText(getActivity(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+
+                                                                    }
+                                                                    dialogInterface.dismiss();
+                                                                }
+                                                            });
                                                 } else {
                                                     progressDialog.dismiss();
                                                     Toast.makeText(getActivity(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-
                                                 }
-                                                dialogInterface.dismiss();
                                             }
                                         });
                             }
