@@ -128,7 +128,15 @@ public class ViewBookingActivity extends AppCompatActivity {
         // CHECK IF USER EXCEEDED HIS MILEAGE VALUES
         if (!currentMileagesStr.equals("not started")) {
             if (Double.parseDouble(currentMileagesStr) > requestBookingModel.getTotalMileages()) {
-                findViewById(R.id.fine_cost_viewer).setVisibility(View.VISIBLE);
+
+                double aboveMileage = requestBookingModel.getTotalMileages()
+                        - Double.parseDouble(currentMileagesStr);
+
+                int fineValue = (int) aboveMileage * 10;
+                TextView fineTv = findViewById(R.id.fine_cost_viewer);
+                fineTv.setText("+ RM"+fineValue+" FINE");
+
+                fineTv.setVisibility(View.VISIBLE);
                 findViewById(R.id.exceeded_mileage_viewer).setVisibility(View.VISIBLE);
             }
         }
