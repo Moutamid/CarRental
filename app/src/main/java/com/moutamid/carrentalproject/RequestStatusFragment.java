@@ -145,7 +145,7 @@ public class RequestStatusFragment extends Fragment {
                                 RequestBookingModel model = snapshot.getValue(RequestBookingModel.class);
 
                                 totalMileagesTv.setText(model.getTotalMileages() + " Mileages");
-                                totalCostTv.setText("RM" + model.getTotalCost());
+                                totalCostTv.setText("$" + model.getTotalCost());
 
                                 if (getActivity() != null) {
                                     if (model.getStatus().equals("pending"))
@@ -318,7 +318,7 @@ public class RequestStatusFragment extends Fragment {
         if (carModel.isAC())
             ac.setVisibility(View.VISIBLE);
 
-        price.setText("RM" + carModel.getPerDayRate() + " /Mileage");
+        price.setText("$" + carModel.getPerDayRate() + " /Mileage");
 
         engine.setText(carModel.getEngine());
 

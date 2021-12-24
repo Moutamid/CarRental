@@ -176,7 +176,7 @@ public class BookCarActivity extends AppCompatActivity {
         if (carModel.isAC())
             ac.setVisibility(View.VISIBLE);
 
-        price.setText("RM" + carModel.getPerDayRate() + " /Mileage");
+        price.setText("$" + carModel.getPerDayRate() + " /Mileage");
 
         engine.setText(carModel.getEngine());
 
@@ -200,11 +200,11 @@ public class BookCarActivity extends AppCompatActivity {
 
         description.setText(carModel.getDescription());
 
-        perMileageRate.setText("~ RM" + carModel.getPerDayRate());
+        perMileageRate.setText("~ $" + carModel.getPerDayRate());
 
         totalCost = Integer.parseInt(carModel.getPerDayRate()) * currentMileageInt;
 
-        totalCostTv.setText("RM" + totalCost);
+        totalCostTv.setText("$" + totalCost);
 
         plusBtn.setOnClickListener(plusBtnClickListener());
         minusBtn.setOnClickListener(minusBtnClickListener());
@@ -281,7 +281,7 @@ public class BookCarActivity extends AppCompatActivity {
 
                 currentMileageTv.setText(currentMileageInt + " mil");
 
-                totalCostTv.setText("RM" + totalCost);
+                totalCostTv.setText("$" + totalCost);
             }
         };
     }
@@ -298,7 +298,7 @@ public class BookCarActivity extends AppCompatActivity {
 
                 currentMileageTv.setText(currentMileageInt + " mil");
 
-                totalCostTv.setText("RM" + totalCost);
+                totalCostTv.setText("$" + totalCost);
             }
         };
     }

@@ -191,7 +191,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
-                                android:text="RM190 /Mileage"
+                                android:text="$190 /Mileage"
                                 android:textColor="@color/black"
                                 android:textSize="17sp"
                                 android:textStyle="bold"
@@ -341,7 +341,7 @@
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
                     android:gravity="end"
-                    android:text="RM500"
+                    android:text="$500"
                     android:textColor="@color/goldenrodd"
                     android:textSize="18sp"
                     android:textStyle="bold" />
